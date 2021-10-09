@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<engine:UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:engine="UnityEngine.UIElements"
+    xmlns:editor="UnityEditor.UIElements"
+    xsi:noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd"
+>
+    <engine:VisualElement style="flex-grow: 1;flex-direction: row;">
+        <engine:Image name="iconImg" style="width: 25px; height: 25px;" />
+        <engine:Toggle name="toggle" style="width: 22px;" />
+    </engine:VisualElement>
+</engine:UXML>
