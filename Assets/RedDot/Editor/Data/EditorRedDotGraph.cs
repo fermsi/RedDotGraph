@@ -17,7 +17,7 @@ namespace RedDot.Editor.Data
             var v = GetRedDotByKey(key);
             if (v == null)
             {
-                Debug.Log($"没有找到对应名字的红点节点：{key}");
+//                Debug.Log($"没有找到对应名字的红点节点：{key}");
                 return false;
             }
 

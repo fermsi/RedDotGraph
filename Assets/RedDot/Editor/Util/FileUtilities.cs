@@ -16,11 +16,7 @@ namespace RedDot.Editor.Util
                 throw new ArgumentNullException(nameof(data));
             }
 
-//            var text = MultiJson.Serialize(data);
-//            var text = MultiJsonInternal.Serialize(data);
             var text = JsonUtility.ToJson(data, true);
-            Debug.Log($"=====:{text}");
-//            var text = EditorJsonUtility.ToJson(data);
             if (WriteToDisk(path, text))
                 return text;
             else

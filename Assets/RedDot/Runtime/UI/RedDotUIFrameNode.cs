@@ -100,7 +100,7 @@ namespace RedDot.Runtime.RedDot
 
         public void DataChanged(List<string> keys, uint id)
         {
-            Debug.Log($"DataChanged===keys:{string.Join(", ", keys)}, id:{id}");
+            Debug.Log($"DataChanged keys:{string.Join(", ", keys)}, id:{id}");
             List<RedDotUIInfo> infos;
             foreach (var key in keys)
             {

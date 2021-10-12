@@ -5,7 +5,6 @@ using RedDot.Runtime.RedDot;
 public class TestRedDot : MonoBehaviour
 {
     public GameObject panelContainer;
-    // Start is called before the first frame update
     void Start()
     {
         TestProxy.Ins().RegVisitors();//注入所有红点逻辑方法

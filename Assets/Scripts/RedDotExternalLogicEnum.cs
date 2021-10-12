@@ -1,6 +1,6 @@
 namespace RedDotDemo
 {
-	public enum RedDotVisitorEnum
+	public enum RedDotExternalLogicEnum
 	{
 		Bag = 1,//背包红点逻辑
 		Equip = 2,//装备红点逻辑

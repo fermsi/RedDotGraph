@@ -51,13 +51,13 @@ namespace RedDot.Runtime.RedDot
         }
 
         /// <summary>
-        /// 叶子节点的访问，就是具体的刷红点数据
+        /// 节点访问，就是具体的刷红点数据
         /// </summary>
         /// <param name="v"></param>
-        private void VisitLeafRedDotVertex(RedDotVertex v, uint id)
+        private void VisitRedDotVertex(RedDotVertex v, uint id)
         {
             var info = v.GetRuntimeInfo(id);
-            RedDotExternalFuncVisitor.Ins().Visit(v.externalId, id, out info.redDotStatus, out info.value);
+            RedDotExternalLogicVisitor.Ins().Visit(v.externalId, id, out info.redDotStatus, out info.value);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace RedDot.Runtime.RedDot
             var info = v.GetRuntimeInfo(redDotUiInfo.Id);
             if (info.isDataChange)
             {
-                redDotGraph.RefreshRedDotStatus(v.key, redDotUiInfo.Id, VisitLeafRedDotVertex);
+                redDotGraph.RefreshRedDotStatus(v.key, redDotUiInfo.Id, VisitRedDotVertex);
             }
             if (info.statusChangeTIme > redDotUiInfo.LastChangeTime)
             {

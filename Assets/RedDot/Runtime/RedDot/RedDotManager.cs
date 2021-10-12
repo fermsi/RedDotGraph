@@ -141,7 +141,7 @@ namespace RedDot.Runtime.RedDot
 //            if (IsUseRefreshByGetRedDotStatus && info.isDataChange)
             if (!IsUseRefreshByGetRedDotStatus && info.isDataChange)
             {
-                redDotGraph.RefreshRedDotStatus(key, id, VisitLeafRedDotVertex);
+                redDotGraph.RefreshRedDotStatus(key, id, VisitRedDotVertex);
             }
             status = info.redDotStatus;
             num = info.value;

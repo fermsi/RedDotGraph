@@ -114,8 +114,8 @@
                 "Desc": "任务红点逻辑"
             }
         ],
-        "classTemplate": "namespace RedDotDemo\n{\n\tpublic enum RedDotVisitorEnum\n\t{\n[[key&values]]\n\t}\n}",
+        "classTemplate": "namespace RedDotDemo\n{\n\tpublic enum RedDotExternalLogicEnum\n\t{\n[[key&values]]\n\t}\n}",
         "keyValueReg": "\t\t[[key]] = [[value]],//[[desc]]",
-        "exportFileName": "RedDotVisitorEnum.cs"
+        "exportFileName": "RedDotExternalLogicEnum.cs"
     }
 }

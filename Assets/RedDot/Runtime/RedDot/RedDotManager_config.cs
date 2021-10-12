@@ -9,7 +9,7 @@ namespace RedDot.Runtime.RedDot
         public void AddJsonFile(string path, bool checkVisitor = true)
         {
             var jsonStr = File.ReadAllText(path, Encoding.UTF8);
-            Debug.Log($"path===={path}，jsonStr===={jsonStr}");
+            Debug.Log($"AddJsonFile path: {path}, jsonStr:{jsonStr}");
             AddJsonStr(jsonStr, checkVisitor);
         }
         
@@ -26,7 +26,7 @@ namespace RedDot.Runtime.RedDot
                 var externalId = vertexJson.ExternalId;
                 if (checkVisitor && externalId != -1)
                 {
-                    if (!RedDotExternalFuncVisitor.Ins().CheckHasExternalId(externalId))
+                    if (!RedDotExternalLogicVisitor.Ins().CheckHasExternalId(externalId))
                     {
                         Debug.LogError($"红点key:{vertexJson.Key}，对应的externalId:{externalId} func在RedDotExternalFuncVisitor中没有注册");
                     }

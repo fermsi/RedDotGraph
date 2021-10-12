@@ -24,10 +24,11 @@ namespace RedDotDemo
 
         public void RegVisitors()
         {
-            RedDotExternalFuncVisitor.Ins().RegVisitor((int)RedDotVisitorEnum.Bag, RedDotFullBag);
-            RedDotExternalFuncVisitor.Ins().RegVisitor((int)RedDotVisitorEnum.Equip, RedDotNewEquip);
-            RedDotExternalFuncVisitor.Ins().RegVisitor((int)RedDotVisitorEnum.Email, RedDotNumberEmail);
-            RedDotExternalFuncVisitor.Ins().RegVisitor((int)RedDotVisitorEnum.Task, RedDotNormalTask_ID);
+            RedDotExternalLogicVisitor.Ins().RegExternalLogic((int)RedDotExternalLogicEnum.Bag, RedDotFullBag);
+            RedDotExternalLogicVisitor.Ins().RegExternalLogic((int)RedDotExternalLogicEnum.Equip, RedDotNewEquip);
+            RedDotExternalLogicVisitor.Ins().RegExternalLogic((int)RedDotExternalLogicEnum.Email, RedDotNumberEmail);
+            RedDotExternalLogicVisitor.Ins().RegExternalLogic((int)RedDotExternalLogicEnum.Task, RedDotNormalTask_ID);
+            RedDotExternalLogicVisitor.Ins().RegExternalLogic((int)RedDotExternalLogicEnum.Task, RedDotNormalTask);
         }
 
         public void InitData()
@@ -52,7 +53,7 @@ namespace RedDotDemo
             }
         }
 
-        private void RedDotFullBag(uint id, out RedDotStatus status, out int num)
+        private void RedDotFullBag(out RedDotStatus status, out int num)
         {
             status = isBagFull ? RedDotStatus.RED_DOT_TYPE_FULL : RedDotStatus.RED_DOT_TYPE_NULL;
             num = 0;
@@ -68,7 +69,7 @@ namespace RedDotDemo
                 RedDotManager.Ins().DataChange(RedDotKeyEnum.Equip.ToString());
             }
         }
-        private void RedDotNewEquip(uint id, out RedDotStatus status, out int num)
+        private void RedDotNewEquip(out RedDotStatus status, out int num)
         {
             status = isEquipNew ? RedDotStatus.RED_DOT_TYPE_NEW : RedDotStatus.RED_DOT_TYPE_NULL;
             num = 0;
@@ -86,7 +87,7 @@ namespace RedDotDemo
             }
         }
 
-        private void RedDotNumberEmail(uint id, out RedDotStatus status, out int num)
+        private void RedDotNumberEmail(out RedDotStatus status, out int num)
         {
             status = emailNum > 0 ? RedDotStatus.RED_DOT_TYPE_NUMBER : RedDotStatus.RED_DOT_TYPE_NULL;
             num = emailNum;
@@ -96,7 +97,7 @@ namespace RedDotDemo
 
         public void TaskStausChange(int taskId, bool hasRedDot)
         {
-            Debug.Log($"===taskId:{taskId}===hasRedDot:{hasRedDot}");
+            Debug.Log($"TaskStausChange taskId:{taskId}, hasRedDot:{hasRedDot}");
             taskNumDict[taskId] = hasRedDot;
             RedDotManager.Ins().DataChange(RedDotKeyEnum.Task.ToString(), (uint)taskId);
         }
@@ -108,23 +109,22 @@ namespace RedDotDemo
 
         private void RedDotNormalTask_ID(uint id, out RedDotStatus status, out int num)
         {
-            if (id == 0)
+            status = taskNumDict[(int)id] ? RedDotStatus.RED_DOT_TYPE_NORMAL : RedDotStatus.RED_DOT_TYPE_NULL;
+            num = 0;
+        }
+
+        private void RedDotNormalTask(out RedDotStatus status, out int num)
+        {
+            status = RedDotStatus.RED_DOT_TYPE_NULL;
+            num = 0;
+            foreach (var taskInfo in taskNumDict)
             {
-                status = RedDotStatus.RED_DOT_TYPE_NULL;
-                foreach (var taskInfo in taskNumDict)
+                if (taskInfo.Value)
                 {
-                    if (taskInfo.Value)
-                    {
-                        status = RedDotStatus.RED_DOT_TYPE_NORMAL;
-                        break;
-                    }
+                    status = RedDotStatus.RED_DOT_TYPE_NORMAL;
+                    break;
                 }
             }
-            else
-            {
-                status = taskNumDict[(int)id] ? RedDotStatus.RED_DOT_TYPE_NORMAL : RedDotStatus.RED_DOT_TYPE_NULL;
-            }
-            num = 0;
         }
     }
 }

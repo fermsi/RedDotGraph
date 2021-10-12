@@ -75,7 +75,6 @@ namespace RedDot.Editor.Views
 
         private void KeySetting()
         {
-            Debug.Log("Key设置");
             if (editorWindow.keySettingWindow != null)
             {
                 editorWindow.keySettingWindow.Focus();
@@ -89,7 +88,6 @@ namespace RedDot.Editor.Views
 
         private void ExternalIdSetting()
         {
-            Debug.Log("逻辑ID设置 ");
             if (editorWindow.externalIdSettingWindow != null)
             {
                 editorWindow.externalIdSettingWindow.Focus();

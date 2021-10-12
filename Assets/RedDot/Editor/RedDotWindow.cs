@@ -29,7 +29,7 @@ namespace RedDot.Editor
         {
             try
             {
-                Debug.Log($"=={assetGuid}==init");
+//                Debug.Log($"=={assetGuid}==init");
                 EditorApplication.wantsToQuit -= PromptSaveIfDirtyOnQuit;
                 var asset = AssetDatabase.LoadAssetAtPath<Object>(AssetDatabase.GUIDToAssetPath(assetGuid));
                 if (asset == null)
@@ -54,7 +54,7 @@ namespace RedDot.Editor
                 
                 var scriptObj = MonoScript.FromScriptableObject(this);
                 PathUtil.CurEditorPath = AssetDatabase.GetAssetPath(scriptObj).Replace("RedDotWindow.cs", "");
-                Debug.Log($"======PathUtil.CurEditorPath:{PathUtil.CurEditorPath}");
+//                Debug.Log($"======PathUtil.CurEditorPath:{PathUtil.CurEditorPath}");
             
                 var textGraph = File.ReadAllText(path, Encoding.UTF8);
                 _graphData = JsonUtility.FromJson<RedDotGraphData>(textGraph);
@@ -99,7 +99,7 @@ namespace RedDot.Editor
 
         public void AssetWasDeleted()
         {
-            Debug.Log("AssetWasDeleted");
+//            Debug.Log("AssetWasDeleted");
             assetMaybeDeleted = true;
             UpdateTitle();
         }
@@ -109,7 +109,7 @@ namespace RedDot.Editor
         /// </summary>
         public void CheckForChanges()
         {
-            Debug.Log("CheckForChanges");
+//            Debug.Log("CheckForChanges");
             if (!assetMaybeDeleted && _graphData != null)
             {
                 assetMaybeChangedOnDisk = true;
@@ -331,7 +331,7 @@ namespace RedDot.Editor
                     return DisplayDeletedFromDiskDialog(false);
 
                 // if there are unsaved modifications, ask the user what to do
-                Debug.Log($"------PromptSaveIfDirtyOnQuit---{_graphData.IsDirty}");
+//                Debug.Log($"------PromptSaveIfDirtyOnQuit---{_graphData.IsDirty}");
                 if (_graphData.IsDirty)
                 {
                     int option = EditorUtility.DisplayDialogComplex(

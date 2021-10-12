@@ -16,7 +16,7 @@ public class RedDotUIMono : MonoBehaviour
     void Awake()
     {
         key = keyEnum.ToString();
-        Debug.Log($"=======key:{key}");
+        Debug.Log($"RedDotUIMono Awake key:{key}");
         RedDotManager.Ins().AddUI(key, RedDotStatusUpdate, id);
         RedDotStatusUpdate();
     }
@@ -26,7 +26,7 @@ public class RedDotUIMono : MonoBehaviour
         RedDotStatus status;
         int num;
         RedDotManager.Ins().GetRedDotStatus(key, id, out status, out num);
-        Debug.Log($"----key:{key}----id:{id}------status:{status}-----num:{num}----");
+        Debug.Log($"RedDotUIMono RedDotStatusUpdate key:{key}, id:{id}, status:{status}, num:{num}");
         string icon = "redDotNormal";
         switch (status)
         {
