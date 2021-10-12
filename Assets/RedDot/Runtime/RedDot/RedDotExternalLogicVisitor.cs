@@ -39,17 +39,17 @@ namespace RedDot.Runtime.RedDot
 
         public void Visit(int externalId, uint id, out RedDotStatus status, out int num)
         {
-            if (id != 0)
+            if (id == 0)
             {
-                if (visitorsWithId.TryGetValue(externalId, out RedDotExternalLogicWithId visitor))
+                if (visitors.TryGetValue(externalId, out RedDotExternalLogic visitor))
                 {
-                    visitor(id, out status, out num);
+                    visitor(out status, out num);
                     return;
                 }
             }
-            else if (visitors.TryGetValue(externalId, out RedDotExternalLogic visitor))
+            if (visitorsWithId.TryGetValue(externalId, out RedDotExternalLogicWithId visitorId))
             {
-                visitor(out status, out num);
+                visitorId(id, out status, out num);
                 return;
             }
 
