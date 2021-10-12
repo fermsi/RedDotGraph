@@ -22,6 +22,12 @@
 
 使用流程
 
+Demo：在Acenes下的TestRedDot.unity，运行效果
+
+![image-2021101104](images/image-2021101104.png)
+
+
+
 ## 文档
 
 各红点之间构成的是一个有向无环图，每个红点是一个节点
