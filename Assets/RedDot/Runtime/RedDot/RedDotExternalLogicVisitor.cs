@@ -39,7 +39,7 @@ namespace RedDot.Runtime.RedDot
 
         public void Visit(int externalId, uint id, out RedDotStatus status, out int num)
         {
-            if (id == 0)
+            if (id != 0)
             {
                 if (visitorsWithId.TryGetValue(externalId, out RedDotExternalLogicWithId visitor))
                 {
