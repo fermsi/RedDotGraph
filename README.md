@@ -34,13 +34,13 @@ Assets -> Create -> Red Dot Graph
 
 在红点编辑器window里有一排按钮，分别是
 
-​	保存：保存红点数据
+​		保存：保存红点数据
 
-​	导出红点配置：会导出一个给运行时用的json文件
+​		导出红点配置：会导出一个给运行时用的json文件
 
-​	key设置：红点节点key的管理，**一个key对应一个红点Node**
+​		key设置：红点节点key的管理，**一个key对应一个红点Node**
 
-​	逻辑ID设置：红点逻辑ID的管理，**这里的ID对应运行时给红点注册的红点逻辑方法ID**
+​		逻辑ID设置：红点逻辑ID的管理，**这里的ID对应运行时给红点注册的红点逻辑方法ID**
 
 #### 管理红点key
 
@@ -83,7 +83,7 @@ RedDotManager.Ins().AddFrame("TestPanel");//切换面板
 ```C#
 RedDotExternalLogicVisitor.Ins().RegExternalLogic((int)RedDotExternalLogicEnum.Bag, RedDotFullBag);
 
-           RedDotExternalLogicVisitor.Ins().RegExternalLogic((int)RedDotExternalLogicEnum.Task, RedDotNormalTask_ID);//最好分开有ID和无ID的回调，如果不分开，需要对ID==0做判断
+RedDotExternalLogicVisitor.Ins().RegExternalLogic((int)RedDotExternalLogicEnum.Task, RedDotNormalTask_ID);//最好分开有ID和无ID的回调，如果不分开，需要对ID==0做判断
 RedDotExternalLogicVisitor.Ins().RegExternalLogic((int)RedDotExternalLogicEnum.Task, RedDotNormalTask);
 ```
 
