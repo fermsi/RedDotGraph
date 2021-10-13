@@ -13,10 +13,10 @@ public class RedDotUIMono : MonoBehaviour
     public uint id;
     
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         key = keyEnum.ToString();
-        Debug.Log($"RedDotUIMono Awake key:{key}");
+        Debug.Log($"RedDotUIMono Start key:{key}");
         RedDotManager.Ins().AddUI(key, RedDotStatusUpdate, id);
         RedDotStatusUpdate();
     }
