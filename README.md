@@ -20,7 +20,7 @@
 
 ## 怎么使用
 
-Demo：在Acenes下的TestRedDot.unity，运行效果
+Demo：在Scenes下的TestRedDot.unity，运行效果
 
 ![image-2021101104](images/image-2021101104.png)
 
