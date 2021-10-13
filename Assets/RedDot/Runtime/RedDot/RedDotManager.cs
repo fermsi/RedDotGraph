@@ -5,14 +5,14 @@ namespace RedDot.Runtime.RedDot
 {
     public partial class RedDotManager
     {
-        private static RedDotManager _ins = null;
+        private static RedDotManager s_ins = null;
         public static RedDotManager Ins()
         {
-            if (_ins == null)
+            if (s_ins == null)
             {
-                _ins = new RedDotManager();
+                s_ins = new RedDotManager();
             }
-            return _ins;
+            return s_ins;
         }
 
         /// <summary>
@@ -32,11 +32,11 @@ namespace RedDot.Runtime.RedDot
         {
             if (id == 0)
             {
-                uiFramesNoId.AddUI(redDotKey, cb);
+                _uiFramesNoId.AddUI(redDotKey, cb);
             }
             else
             {
-                uiFramesHasId.AddUI(redDotKey, cb, id);
+                _uiFramesHasId.AddUI(redDotKey, cb, id);
             }
         }
 
@@ -48,7 +48,7 @@ namespace RedDot.Runtime.RedDot
         /// <param name="cb"></param>
         public void RemoveUI(string redDotKey, Action cb, uint id = 0)
         {
-            if (redDotKey == null || redDotKey == "")
+            if (string.IsNullOrEmpty(redDotKey))
             {
                 Debug.LogWarning($"解绑定的红点key为空");
                 return;
@@ -61,11 +61,11 @@ namespace RedDot.Runtime.RedDot
             }
             if (id == 0)
             {
-                uiFramesNoId.RemoveUI(redDotKey, cb);
+                _uiFramesNoId.RemoveUI(redDotKey, cb);
             }
             else
             {
-                uiFramesHasId.RemoveUI(redDotKey, cb, id);
+                _uiFramesHasId.RemoveUI(redDotKey, cb, id);
             }
         }
 
@@ -75,8 +75,8 @@ namespace RedDot.Runtime.RedDot
         /// <param name="key"></param>
         public void DataChange(string key)
         {
-            var changedList = redDotGraph.RedDotDataChange(key);
-            uiFramesNoId.GetCurrentFrameNode()?.DataChanged(changedList, 0);
+            var changedList = RedDotGrapic.RedDotDataChange(key);
+            _uiFramesNoId.GetCurrentFrameNode()?.DataChanged(changedList, 0);
         }
 
         /// <summary>
@@ -86,8 +86,8 @@ namespace RedDot.Runtime.RedDot
         /// <param name="id"></param>
         public void DataChange(string key, uint id)
         {
-            var changedList = redDotGraph.RedDotDataChange(key, id);
-            uiFramesHasId.GetCurrentFrameNode()?.DataChanged(changedList, id);
+            var changedList = RedDotGrapic.RedDotDataChange(key, id);
+            _uiFramesHasId.GetCurrentFrameNode()?.DataChanged(changedList, id);
             if (id != 0) DataChange(key);
         }
 
@@ -97,8 +97,8 @@ namespace RedDot.Runtime.RedDot
         /// </summary>
         public void RefreshRedDot()
         {
-            TravelUIFrames(uiFramesNoId);
-            TravelUIFrames(uiFramesHasId);
+            TravelUIFrames(_uiFramesNoId);
+            TravelUIFrames(_uiFramesHasId);
         }
 
         /// <summary>
@@ -107,20 +107,20 @@ namespace RedDot.Runtime.RedDot
         /// <param name="name"></param>
         public void ChangeToFrame(string name)
         {
-            uiFramesNoId.ChangeToFrame(name);
-            uiFramesHasId.ChangeToFrame(name);
+            _uiFramesNoId.ChangeToFrame(name);
+            _uiFramesHasId.ChangeToFrame(name);
         }
 
         public void AddFrame(string name)
         {
-            uiFramesNoId.AddFrame(name);
-            uiFramesHasId.AddFrame(name);
+            _uiFramesNoId.AddFrame(name);
+            _uiFramesHasId.AddFrame(name);
         }
 
         public void RemoveFrame(string name)
         {
-            uiFramesNoId.RemoveFrame(name);
-            uiFramesHasId.RemoveFrame(name);
+            _uiFramesNoId.RemoveFrame(name);
+            _uiFramesHasId.RemoveFrame(name);
         }
 
         /// <summary>
@@ -134,17 +134,17 @@ namespace RedDot.Runtime.RedDot
         /// <param name="num"></param>
         public void GetRedDotStatus(string key, uint id, out RedDotStatus status, out int num)
         {
-            var v = redDotGraph.GetRedDotByKey(key);
+            var v = RedDotGrapic.GetRedDotByKey(key);
             var info = v.GetRuntimeInfo(id);
             //如果数据有刷新，则需要及时的刷一下，这里采用的是及时刷。
             //要不要及时刷由框架决定，如果调用RefreshRedDot，就不需要及时刷新//todo
 //            if (IsUseRefreshByGetRedDotStatus && info.isDataChange)
-            if (!IsUseRefreshByGetRedDotStatus && info.isDataChange)
+            if (!IsUseRefreshByGetRedDotStatus && info.IsDataChange)
             {
-                redDotGraph.RefreshRedDotStatus(key, id, VisitRedDotVertex);
+                RedDotGrapic.RefreshRedDotStatus(key, id, VisitRedDotVertex);
             }
-            status = info.redDotStatus;
-            num = info.value;
+            status = info.RedDotStatus;
+            num = info.Value;
         }
     }
 }

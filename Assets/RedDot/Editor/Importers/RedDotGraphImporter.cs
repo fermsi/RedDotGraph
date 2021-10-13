@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RedDot.Editor.Importers
 {
-    [ScriptedImporter(1, RedDotEditorConfig.Extension)]
+    [ScriptedImporter(1, RedDotEditorConfig.EXTENSION)]
     public class RedDotGraphImporter : ScriptedImporter
     {
         public override void OnImportAsset(AssetImportContext ctx)

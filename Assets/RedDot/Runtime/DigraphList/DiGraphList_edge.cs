@@ -28,7 +28,7 @@ namespace RedDot.Runtime.DigraphList
         {
             foreach (var edge in outEdges[v])
             {
-                if (edge.toVertexRank == u) return true;
+                if (edge.ToVertexRank == u) return true;
             }
             return false;
         }
@@ -63,7 +63,7 @@ namespace RedDot.Runtime.DigraphList
         {
             for (int edgeIndex = 0; edgeIndex < outEdges[v].Count; edgeIndex++)
             {
-                if (outEdges[v][edgeIndex].toVertexRank == u)
+                if (outEdges[v][edgeIndex].ToVertexRank == u)
                 {
                     for (int inEdgeIndex = 0; inEdgeIndex < inEdges[u].Count; inEdgeIndex++)
                     {
@@ -77,7 +77,7 @@ namespace RedDot.Runtime.DigraphList
                     eNum--;
                     var temp = outEdges[v][edgeIndex];
                     outEdges[v].RemoveAt(edgeIndex);//删除出度
-                    return temp.data;
+                    return temp.Data;
                 }
             }
             return default(Te);
@@ -92,8 +92,8 @@ namespace RedDot.Runtime.DigraphList
         public virtual EType GetEType(int v, int u)
         {
             var edge = GetEdgeObj(v, u);
-            if (edge != null) return edge.etype;
-            return EType.UNDETERMINED;
+            if (edge != null) return edge.Etype;
+            return EType.Undetermined;
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace RedDot.Runtime.DigraphList
         public virtual void SetEType(int v, int u, EType type)
         {
             var edge = GetEdgeObj(v, u);
-            if (edge != null) edge.etype = type;
+            if (edge != null) edge.Etype = type;
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace RedDot.Runtime.DigraphList
         public virtual Te GetEdge(int v, int u)
         {
             var edge = GetEdgeObj(v, u);
-            if (edge != null) return edge.data;
+            if (edge != null) return edge.Data;
             return default(Te);
         }
 
@@ -131,7 +131,7 @@ namespace RedDot.Runtime.DigraphList
         public virtual void SetEdge(int v, int u, Te edge)
         {
             var edgeObj = GetEdgeObj(v, u);
-            if (edgeObj != null) edgeObj.data = edge;
+            if (edgeObj != null) edgeObj.Data = edge;
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace RedDot.Runtime.DigraphList
         public virtual int GetWeight(int v, int u)
         {
             var edge = GetEdgeObj(v, u);
-            if (edge != null) return edge.weight;
+            if (edge != null) return edge.Weight;
             return 0;
         }
 
@@ -156,7 +156,7 @@ namespace RedDot.Runtime.DigraphList
         public virtual void SetWeight(int v, int u, int weight)
         {
             var edge = GetEdgeObj(v, u);
-            if (edge != null) edge.weight = weight;
+            if (edge != null) edge.Weight = weight;
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace RedDot.Runtime.DigraphList
         public virtual void ChangeEdgeTo(int v, int oldU, int newU)
         {
             var oldEdge = GetEdgeObj(v, oldU);
-            Insert(v, newU, oldEdge.data, oldEdge.weight);//先添加
+            Insert(v, newU, oldEdge.Data, oldEdge.Weight);//先添加
             Remove(v, oldU);//后删除
         }
     }

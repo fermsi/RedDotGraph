@@ -14,12 +14,12 @@ namespace RedDot.Runtime.RedDot
     /// </summary>
     public class RedDotUIFrames
     {
-        private Dictionary<string, FrameNode> frameNodeDict = new Dictionary<string, FrameNode>();
-        private FrameNode curFrameNode;
+        private Dictionary<string, FrameNode> _frameNodeDict = new Dictionary<string, FrameNode>();
+        private FrameNode _curFrameNode;
 
         public void AddUI(string redDotKey, Action cb, uint id = 0)
         {
-            var frameNode = curFrameNode;
+            var frameNode = _curFrameNode;
             frameNode.TryAddRedDotUIInfo(redDotKey, cb, id);
         }
 
@@ -31,17 +31,17 @@ namespace RedDot.Runtime.RedDot
         /// <param name="id"></param>
         public void RemoveUI(string redDotKey, Action cb, uint id = 0)
         {
-            var frameNode = curFrameNode;
+            var frameNode = _curFrameNode;
             frameNode.RemoveRedDotUIInfo(redDotKey, cb, id);
         }
 
         public void AddFrame(string name)
         {
-            if (!frameNodeDict.ContainsKey(name))
+            if (!_frameNodeDict.ContainsKey(name))
             {
                 var node = new FrameNode();
-                curFrameNode = node;
-                frameNodeDict[name] = node;
+                _curFrameNode = node;
+                _frameNodeDict[name] = node;
             }
             else
             {
@@ -51,9 +51,9 @@ namespace RedDot.Runtime.RedDot
 
         public void RemoveFrame(string name)
         {
-            if (frameNodeDict.TryGetValue(name, out FrameNode node))
+            if (_frameNodeDict.TryGetValue(name, out FrameNode node))
             {
-                frameNodeDict.Remove(name);
+                _frameNodeDict.Remove(name);
                 node.Dispose();
             }
             else
@@ -64,9 +64,9 @@ namespace RedDot.Runtime.RedDot
 
         public void ChangeToFrame(string name)
         {
-            if (frameNodeDict.TryGetValue(name, out FrameNode node))
+            if (_frameNodeDict.TryGetValue(name, out FrameNode node))
             {
-                curFrameNode = node;
+                _curFrameNode = node;
             }
             else
             {
@@ -76,7 +76,7 @@ namespace RedDot.Runtime.RedDot
 
         public FrameNode GetCurrentFrameNode()
         {
-            return curFrameNode;
+            return _curFrameNode;
         }
     }
 }

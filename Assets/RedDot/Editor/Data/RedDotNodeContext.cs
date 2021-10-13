@@ -8,21 +8,21 @@ namespace RedDot.Editor.Data
     [Serializable]
     public class RedDotNodeContext
     {
-        public int Id;
-        public Vector2 Position;
-        public List<int> OutNodeIds = new List<int>();
-        public int KeyId;
-        public int FuncId;
-        public int RedDotType;
+        public int id;
+        public Vector2 position;
+        public List<int> outNodeIds = new List<int>();
+        public int keyId;
+        public int funcId;
+        public int redDotType;
 
         public void RemoveOutNode(int id)
         {
-            OutNodeIds.Remove(id);
+            outNodeIds.Remove(id);
         }
 
         public void AddOutNode(int id)
         {
-            OutNodeIds.Add(id);
+            outNodeIds.Add(id);
         }
     }
 }

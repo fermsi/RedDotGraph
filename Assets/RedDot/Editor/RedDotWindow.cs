@@ -46,7 +46,7 @@ namespace RedDot.Editor
                 if (extension == null)
                     return;
                 extension = extension.Substring(1).ToLowerInvariant();
-                if (extension != RedDotEditorConfig.Extension)
+                if (extension != RedDotEditorConfig.EXTENSION)
                 {
                     return;
                 }
@@ -160,12 +160,12 @@ namespace RedDot.Editor
 
                 if (keySettingWindow != null)
                 {
-                    keySettingWindow.Initialize(_graphData.KeyEnumDict, RedDotEditorConfig.KEY_WINDOW_TITLE);
+                    keySettingWindow.Initialize(_graphData.keyEnumDict, RedDotEditorConfig.KEY_WINDOW_TITLE);
                 }
 
                 if (externalIdSettingWindow != null)
                 {
-                    externalIdSettingWindow.Initialize(_graphData.ExternalIdEnumDict, RedDotEditorConfig.EXTERNAL_ID_WINDOW_TITLE);
+                    externalIdSettingWindow.Initialize(_graphData.externalIdEnumDict, RedDotEditorConfig.EXTERNAL_ID_WINDOW_TITLE);
                 }
             }
         }
@@ -242,7 +242,7 @@ namespace RedDot.Editor
                 // The asset's name needs to be removed from the path, otherwise SaveFilePanel assumes it's a folder
                 string oldDirectory = Path.GetDirectoryName(oldFilePath);
 
-                var extension = RedDotEditorConfig.Extension;
+                var extension = RedDotEditorConfig.EXTENSION;
                 var newFilePath = EditorUtility.SaveFilePanelInProject("Save Red Dot Graph As...", Path.GetFileNameWithoutExtension(oldFilePath), extension, "", oldDirectory);
                 newFilePath = newFilePath.Replace(Application.dataPath, "Assets");
 
@@ -421,7 +421,7 @@ namespace RedDot.Editor
                 }
                 string oldDirectory = Path.GetDirectoryName(oldFilePath);
 
-                var extension = RedDotEditorConfig.ExportExtension;
+                var extension = RedDotEditorConfig.EXPORT_EXTENSION;
                 var newFilePath = EditorUtility.SaveFilePanelInProject("Export Red Dot Graph to Json", Path.GetFileNameWithoutExtension(oldFilePath), extension, "", oldDirectory);
                 newFilePath = newFilePath.Replace(Application.dataPath, "Assets");
 

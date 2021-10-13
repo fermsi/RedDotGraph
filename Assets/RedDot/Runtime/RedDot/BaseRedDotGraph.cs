@@ -6,7 +6,7 @@ namespace RedDot.Runtime.RedDot
 {
     public class BaseRedDotGraph : DAG<RedDotVertex, int>
     {
-        private static uint __time = 0;
+        private static uint s_time = 0;
 
         /// <summary>
         /// 获取当前时间——计数
@@ -14,11 +14,11 @@ namespace RedDot.Runtime.RedDot
         /// <returns></returns>
         protected static uint GetTime()
         {
-            __time++;
-            return __time;
+            s_time++;
+            return s_time;
         }
         
-        protected Dictionary<string, int> vertexDict = new Dictionary<string, int>();
+        protected Dictionary<string, int> VertexDict = new Dictionary<string, int>();
         
         /// <summary>
         /// 插入顶点
@@ -27,15 +27,15 @@ namespace RedDot.Runtime.RedDot
         /// <returns></returns>
         public override int Insert(RedDotVertex v)
         {
-            if (CheckHasRedDotByKey(v.key))
+            if (CheckHasRedDotByKey(v.Key))
             {
-                Console.WriteLine($"已经有此红点了, key: {v.key}");
+                Console.WriteLine($"已经有此红点了, key: {v.Key}");
                 return -1;
             }
             int index = base.Insert(v);
             var vertex = GetVertex(index);
             // vertex.key = $"default_name_{index}";
-            vertexDict[vertex.key] = index;
+            VertexDict[vertex.Key] = index;
             return index;
         }
 
@@ -47,12 +47,12 @@ namespace RedDot.Runtime.RedDot
         /// <param name="weight"></param>
         public bool InsertEdge(string vex1, string vex2, int weight = 0)
         {
-            if (!vertexDict.TryGetValue(vex1, out int v))
+            if (!VertexDict.TryGetValue(vex1, out int v))
             {
                 Console.WriteLine($"没找到顶点：{vex1}");
                 return false;
             }
-            if (!vertexDict.TryGetValue(vex2, out int u))
+            if (!VertexDict.TryGetValue(vex2, out int u))
             {
                 Console.WriteLine($"没找到顶点：{vex2}");
                 return false;
@@ -65,9 +65,9 @@ namespace RedDot.Runtime.RedDot
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public bool CheckHasRedDotByKey(string key)
+        protected bool CheckHasRedDotByKey(string key)
         {
-            return vertexDict.ContainsKey(key);
+            return VertexDict.ContainsKey(key);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace RedDot.Runtime.RedDot
         /// <returns></returns>
         public RedDotVertex GetRedDotByKey(string key)
         {
-            if (vertexDict.TryGetValue(key, out int index))
+            if (VertexDict.TryGetValue(key, out int index))
             {
                 return GetVertex(index);
             }

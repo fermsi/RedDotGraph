@@ -1,54 +1,54 @@
 {
-    "Vertexs": [
+    "vertexs": [
         {
-            "Key": "Normal",
-            "RedDotType": 13,
-            "ExternalId": -1
+            "key": "Normal",
+            "redDotType": 13,
+            "externalId": -1
         },
         {
-            "Key": "Email",
-            "RedDotType": 2,
-            "ExternalId": 3
+            "key": "Email",
+            "redDotType": 2,
+            "externalId": 3
         },
         {
-            "Key": "Equip",
-            "RedDotType": 4,
-            "ExternalId": 2
+            "key": "Equip",
+            "redDotType": 4,
+            "externalId": 2
         },
         {
-            "Key": "Bag",
-            "RedDotType": 8,
-            "ExternalId": 1
+            "key": "Bag",
+            "redDotType": 8,
+            "externalId": 1
         },
         {
-            "Key": "Task",
-            "RedDotType": 1,
-            "ExternalId": 4
+            "key": "Task",
+            "redDotType": 1,
+            "externalId": 4
         }
     ],
-    "Edges": [
+    "edges": [
         {
-            "Key": "Normal",
-            "OutKeys": [
+            "key": "Normal",
+            "outKeys": [
                 "Equip",
                 "Bag"
             ]
         },
         {
-            "Key": "Email",
-            "OutKeys": []
+            "key": "Email",
+            "outKeys": []
         },
         {
             "Key": "Equip",
-            "OutKeys": []
+            "outKeys": []
         },
         {
-            "Key": "Bag",
-            "OutKeys": []
+            "key": "Bag",
+            "outKeys": []
         },
         {
-            "Key": "Task",
-            "OutKeys": []
+            "key": "Task",
+            "outKeys": []
         }
     ]
 }

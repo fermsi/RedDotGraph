@@ -60,20 +60,5 @@ namespace RedDot.Editor.Util
 
             return true;
         }
-
-        // returns contents of the asset file as a string, or null if any error or exception occurred
-        public static string SafeReadAllText(string assetPath)
-        {
-            string result = null;
-            try
-            {
-                result = File.ReadAllText(assetPath, Encoding.UTF8);
-            }
-            catch
-            {
-                result = null;
-            }
-            return result;
-        }
     }
 }

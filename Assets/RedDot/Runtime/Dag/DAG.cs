@@ -27,9 +27,9 @@ namespace RedDot.Runtime.Dag
             }
             
             Reset();//先重置状态
-            SetStatus(v, VStatus.DISCOVERED);//标记开始点为被发现
+            SetStatus(v, VStatus.Discovered);//标记开始点为被发现
             //检查是否有环
-            if (checkCyclic(u))
+            if (CheckCyclic(u))
             {
                 Console.WriteLine($"插入边({v}, {u})失败，构成了环");
                 return false;
@@ -46,9 +46,8 @@ namespace RedDot.Runtime.Dag
         /// </summary>
         /// <param name="r"></param>
         /// <returns></returns>
-        private bool checkCyclic(int r)
+        private bool CheckCyclic(int r)
         {
-            List<Edge<Te>> temp;
             Stack<int> undiscoverStack = new Stack<int>();
             Stack<int> discoverStack = new Stack<int>();//用于通路回溯，记录当前通路的各个节点，回溯的时候，pop就行
             undiscoverStack.Push(r);
@@ -60,30 +59,30 @@ namespace RedDot.Runtime.Dag
                     //这里可以在加上一个GetStatus(index) == VStatus.VISITED则undiscoverStack.Pop(); continue;的判断
                     
                     discoverStack.Push(index);
-                    temp = outEdges[index];
-                    SetStatus(index, VStatus.DISCOVERED);
+                    var temp = outEdges[index];
+                    SetStatus(index, VStatus.Discovered);
                     for (int i = 0; i < temp.Count; i++)
                     {
                         var edge = temp[i];
-                        if (GetStatus(edge.toVertexRank) == VStatus.DISCOVERED)
+                        if (GetStatus(edge.ToVertexRank) == VStatus.Discovered)
                         {
-                            Console.Write($"{edge.toVertexRank} <- ");
+                            Console.Write($"{edge.ToVertexRank} <- ");
                             while (discoverStack.Count > 0)
                             {
                                 Console.Write($"{discoverStack.Pop()} <- ");
                             }
-                            Console.Write($"{edge.toVertexRank}");
+                            Console.Write($"{edge.ToVertexRank}");
                             Console.WriteLine($"构成了环");
                             return true;
                         }
                         //else
-                        if (GetStatus(edge.toVertexRank) == VStatus.UNDISCOVERED)
-                            undiscoverStack.Push(edge.toVertexRank);
+                        if (GetStatus(edge.ToVertexRank) == VStatus.Undiscovered)
+                            undiscoverStack.Push(edge.ToVertexRank);
                     }
                 }
                 else
                 {
-                    SetStatus(undiscoverStack.Pop(), VStatus.VISITED);
+                    SetStatus(undiscoverStack.Pop(), VStatus.Visited);
                     discoverStack.Pop();
                 }
             }

@@ -12,31 +12,30 @@ namespace RedDot.Editor.Views
 {
     public class RedDotNodeView:Node
     {
-        public Port inPort;
-        public Port outPort;
-        private RedDotNodeContext nodeContext;
-        private RedDotGraphData graphData;
+        public Port InPort;
+        public Port OutPort;
+        private RedDotNodeContext _nodeContext;
+        private RedDotGraphData _graphData;
         public RedDotNodeView(RedDotNodeContext nodeContext, RedDotGraphData graphData)
         {
-            this.nodeContext = nodeContext;
-            this.graphData = graphData;
+            _nodeContext = nodeContext;
+            _graphData = graphData;
             //创建一个inputPort
-            inPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(Port));
+            InPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(Port));
             //设置port显示的名称
-            inPort.portName = " ";
-            inPort.portColor = Color.red;
+            InPort.portName = " ";
+            InPort.portColor = Color.red;
             //添加到inputContainer容器中
-            inputContainer.Add(inPort);
-            outPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(Port));
-            outPort.portName = "子节点";
-            outPort.portColor = Color.red;
-            outputContainer.Add(outPort);
-            SetPosition(new Rect(nodeContext.Position.x, nodeContext.Position.y, 0, 0));
+            inputContainer.Add(InPort);
+            OutPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(Port));
+            OutPort.portName = "子节点";
+            OutPort.portColor = Color.red;
+            outputContainer.Add(OutPort);
+            SetPosition(new Rect(nodeContext.position.x, nodeContext.position.y, 0, 0));
             RepaintElements();
             RefreshExpandedState();
         }
 
-        private Image iconImg;
         private void RepaintElements()
         {
             var temp = new VisualElement();
@@ -46,20 +45,20 @@ namespace RedDot.Editor.Views
             root.styleSheets.Add(rootStyleSheet);
             var labelStyleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(PathUtil.GetEditorFilePath("Resources/Styles/Label.uss"));
             
-            title = graphData.KeyEnumDict.GetNodeKey(nodeContext.KeyId);
+            title = _graphData.keyEnumDict.GetNodeKey(_nodeContext.keyId);
 
             var label = new Label("红点key");
             label.styleSheets.Add(labelStyleSheet);
             root.Add(label);
             
-            var choices = graphData.KeyEnumDict.GetNodeKeys();
+            var choices = _graphData.keyEnumDict.GetNodeKeys();
             var normalField = new PopupField<string>(choices, 0);
             normalField.value = title;
             root.Add(normalField);
             normalField.RegisterCallback<ChangeEvent<string>>((evt) =>
             {
-                nodeContext.KeyId = graphData.KeyEnumDict.GetIdByNodeKey(evt.newValue);
-                graphData.Dirty();
+                _nodeContext.keyId = _graphData.keyEnumDict.GetIdByNodeKey(evt.newValue);
+                _graphData.Dirty();
                 title = evt.newValue;
             });
             
@@ -67,14 +66,14 @@ namespace RedDot.Editor.Views
             label.styleSheets.Add(labelStyleSheet);
             root.Add(label);
             
-            var funcKeys = graphData.ExternalIdEnumDict.GetNodeKeys();
+            var funcKeys = _graphData.externalIdEnumDict.GetNodeKeys();
             var funcField = new PopupField<string>(funcKeys, 0);
-            funcField.value = graphData.ExternalIdEnumDict.GetNodeKey(nodeContext.FuncId);
+            funcField.value = _graphData.externalIdEnumDict.GetNodeKey(_nodeContext.funcId);
             root.Add(funcField);
             funcField.RegisterCallback<ChangeEvent<string>>((evt) =>
             {
-                nodeContext.FuncId = graphData.ExternalIdEnumDict.GetIdByNodeKey(evt.newValue);
-                graphData.Dirty();
+                _nodeContext.funcId = _graphData.externalIdEnumDict.GetIdByNodeKey(evt.newValue);
+                _graphData.Dirty();
             });
 
             
@@ -87,9 +86,9 @@ namespace RedDot.Editor.Views
             VisualElement container = visualTreeNormal.Instantiate();
             root.Add(container);
             var iconsContainer = container.Q<VisualElement>("container");
-            var statusItem = new RedDotNodeStatusItem(RedDotNodeContextStatus.NORMAL, nodeContext, graphData);
+            var statusItem = new RedDotNodeStatusItem(RedDotNodeContextStatus.Normal, _nodeContext, _graphData);
             iconsContainer.Add(statusItem);
-            statusItem = new RedDotNodeStatusItem(RedDotNodeContextStatus.NEW, nodeContext, graphData);
+            statusItem = new RedDotNodeStatusItem(RedDotNodeContextStatus.New, _nodeContext, _graphData);
             iconsContainer.Add(statusItem);
 
             visualTreeNormal =
@@ -98,20 +97,20 @@ namespace RedDot.Editor.Views
             container = visualTreeNormal.Instantiate();
             root.Add(container);
             iconsContainer = container.Q<VisualElement>("container");
-            statusItem = new RedDotNodeStatusItem(RedDotNodeContextStatus.NUMBER, nodeContext, graphData);
+            statusItem = new RedDotNodeStatusItem(RedDotNodeContextStatus.Number, _nodeContext, _graphData);
             iconsContainer.Add(statusItem);
-            statusItem = new RedDotNodeStatusItem(RedDotNodeContextStatus.FULL, nodeContext, graphData);
+            statusItem = new RedDotNodeStatusItem(RedDotNodeContextStatus.Full, _nodeContext, _graphData);
             iconsContainer.Add(statusItem);
         }
 
         public void NodeChanged()
         {
-            nodeContext.Position = GetPosition().position;
+            _nodeContext.position = GetPosition().position;
         }
 
         public RedDotNodeContext GetContext()
         {
-            return nodeContext;
+            return _nodeContext;
         }
     }
 }

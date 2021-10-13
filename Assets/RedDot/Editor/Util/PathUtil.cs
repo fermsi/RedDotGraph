@@ -6,7 +6,7 @@ namespace RedDot.Editor.Util
 
         public static string GetEditorFilePath(string fileName)
         {
-            return $"{PathUtil.CurEditorPath}{fileName}";
+            return $"{CurEditorPath}{fileName}";
         }
     }
 }

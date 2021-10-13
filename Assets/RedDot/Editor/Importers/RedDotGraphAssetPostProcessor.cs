@@ -40,22 +40,22 @@ namespace RedDot.Editor.Importers
 //            RegisterShaders(importedAssets);
 
             // Moved assets
-            bool anyMovedShaders = movedAssets.Any(val => val.EndsWith(RedDotEditorConfig.Extension, StringComparison.InvariantCultureIgnoreCase));
-            anyMovedShaders |= movedAssets.Any(val => val.EndsWith(RedDotEditorConfig.Extension, StringComparison.InvariantCultureIgnoreCase));
+            bool anyMovedShaders = movedAssets.Any(val => val.EndsWith(RedDotEditorConfig.EXTENSION, StringComparison.InvariantCultureIgnoreCase));
+            anyMovedShaders |= movedAssets.Any(val => val.EndsWith(RedDotEditorConfig.EXTENSION, StringComparison.InvariantCultureIgnoreCase));
             if (anyMovedShaders)
                 UpdateAfterAssetChange(movedAssets);
 
             // Deleted assets
-            bool anyRemovedShaders = deletedAssets.Any(val => val.EndsWith(RedDotEditorConfig.Extension, StringComparison.InvariantCultureIgnoreCase));
-            anyRemovedShaders |= deletedAssets.Any(val => val.EndsWith(RedDotEditorConfig.Extension, StringComparison.InvariantCultureIgnoreCase));
+            bool anyRemovedShaders = deletedAssets.Any(val => val.EndsWith(RedDotEditorConfig.EXTENSION, StringComparison.InvariantCultureIgnoreCase));
+            anyRemovedShaders |= deletedAssets.Any(val => val.EndsWith(RedDotEditorConfig.EXTENSION, StringComparison.InvariantCultureIgnoreCase));
             if (anyRemovedShaders)
                 DisplayDeletionDialog(deletedAssets);
 
             var windows = Resources.FindObjectsOfTypeAll<RedDotWindow>();
 
             var changedGraphGuids = importedAssets
-                .Where(x => x.EndsWith(RedDotEditorConfig.Extension, StringComparison.InvariantCultureIgnoreCase)
-                    || x.EndsWith(RedDotEditorConfig.Extension, StringComparison.InvariantCultureIgnoreCase))
+                .Where(x => x.EndsWith(RedDotEditorConfig.EXTENSION, StringComparison.InvariantCultureIgnoreCase)
+                    || x.EndsWith(RedDotEditorConfig.EXTENSION, StringComparison.InvariantCultureIgnoreCase))
                 .Select(AssetDatabase.AssetPathToGUID)
                 .ToList();
             foreach (var window in windows)

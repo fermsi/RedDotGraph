@@ -5,16 +5,17 @@ namespace RedDot.Editor.Data
 {
     public class EditorRedDotManager
     {
-        private static EditorRedDotManager _ins = null;
+        private static EditorRedDotManager s_ins = null;
         public static EditorRedDotManager Ins()
         {
-            if (_ins == null)
+            if (s_ins == null)
             {
-                _ins = new EditorRedDotManager();
+                s_ins = new EditorRedDotManager();
             }
-            return _ins;
+            return s_ins;
         }
-        protected EditorRedDotGraph redDotGraph = new EditorRedDotGraph();
+
+        private EditorRedDotGraph _redDotGraph = new EditorRedDotGraph();
 
         private EditorRedDotManager()
         {
@@ -30,7 +31,7 @@ namespace RedDot.Editor.Data
         /// <returns></returns>
         public int AddRedDotVertex(string key, int redDotType, int externalId = -1)
         {
-            return redDotGraph.Insert(new RedDotVertex(key, redDotType, externalId));
+            return _redDotGraph.Insert(new RedDotVertex(key, redDotType, externalId));
         }
 
         /// <summary>
@@ -42,7 +43,7 @@ namespace RedDot.Editor.Data
         /// <returns></returns>
         public bool AddRedDotEdge(string vex1, string vex2, int weight = 0)
         {
-            return redDotGraph.InsertEdge(vex1, vex2, weight);
+            return _redDotGraph.InsertEdge(vex1, vex2, weight);
         }
         
         /// <summary>
@@ -53,7 +54,7 @@ namespace RedDot.Editor.Data
         /// <returns></returns>
         public bool ChangeRedDotKey(string oldStr, string newStr)
         {
-            return redDotGraph.ChangeRedDotKey(oldStr, newStr);
+            return _redDotGraph.ChangeRedDotKey(oldStr, newStr);
         }
 
         /// <summary>
@@ -65,16 +66,16 @@ namespace RedDot.Editor.Data
         /// <returns></returns>
         public bool ChangeEdgeTo(string startVex, string oldEndVex, string newEndVex)
         {
-            int r1 = redDotGraph.GetVertexRank(startVex);
-            int r2 = redDotGraph.GetVertexRank(oldEndVex);
+            int r1 = _redDotGraph.GetVertexRank(startVex);
+            int r2 = _redDotGraph.GetVertexRank(oldEndVex);
             if (r1 == -1 || r2 == -1) return false;
-            var weight = redDotGraph.GetWeight(r1, r2);
+            var weight = _redDotGraph.GetWeight(r1, r2);
             //要修改的那条边并不会影响新添加边的回路
             //意思就是说：新添加的边，不会因为有边(startVex->oldEndVex)而影响其构成回路
             //所以先添加边即可
             if (AddRedDotEdge(startVex, newEndVex, weight))
             {
-                redDotGraph.Remove(r1, r2);
+                _redDotGraph.Remove(r1, r2);
                 return true;
             }
             return false;
@@ -89,14 +90,14 @@ namespace RedDot.Editor.Data
         /// <returns></returns>
         public bool ChangeWeight(string vex1, string vex2, int weight)
         {
-            int r1 = redDotGraph.GetVertexRank(vex1);
-            int r2 = redDotGraph.GetVertexRank(vex2);
+            int r1 = _redDotGraph.GetVertexRank(vex1);
+            int r2 = _redDotGraph.GetVertexRank(vex2);
             if (r1 == -1 || r2 == -1)
             {
                 Console.WriteLine("修改权重失败，节点没有获取到");
                 return false;
             }
-            redDotGraph.SetWeight(r1, r2, weight);
+            _redDotGraph.SetWeight(r1, r2, weight);
             return true;
         }
     }

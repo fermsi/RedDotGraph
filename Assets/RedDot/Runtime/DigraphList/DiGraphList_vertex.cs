@@ -9,11 +9,11 @@ namespace RedDot.Runtime.DigraphList
         /// <summary>
         /// 顶点列表
         /// </summary>
-        protected List<Vertex<Tv>> vertices = new List<Vertex<Tv>>();
+        protected List<Vertex<Tv>> Vertices = new List<Vertex<Tv>>();
         /// <summary>
         /// 顶点总数
         /// </summary>
-        protected int vNum = 0;
+        protected int VNum = 0;
 
         /// <summary>
         /// 插入顶点
@@ -22,10 +22,10 @@ namespace RedDot.Runtime.DigraphList
         /// <returns></returns>
         public virtual int Insert(Tv v)
         {
-            vertices.Add(new Vertex<Tv>(v));
+            Vertices.Add(new Vertex<Tv>(v));
             outEdges.Add(new List<Edge<Te>>());
             inEdges.Add(new List<int>());
-            return vNum++;
+            return VNum++;
         }
 
         /// <summary>
@@ -35,12 +35,12 @@ namespace RedDot.Runtime.DigraphList
         /// <returns></returns>
         public virtual Tv Remove(int r)
         {
-            Vertex<Tv> v = vertices[r];
+            Vertex<Tv> v = Vertices[r];
             List<Edge<Te>> es = outEdges[r];
             //删除所有出边
             for (int i = es.Count - 1; i >= 0; i--)
             {
-                Remove(r, es[i].toVertexRank);
+                Remove(r, es[i].ToVertexRank);
             }
 
             //删除所有入边
@@ -53,8 +53,8 @@ namespace RedDot.Runtime.DigraphList
             //清空相关数据
             outEdges.RemoveAt(r);
             inEdges.RemoveAt(r);
-            vertices.RemoveAt(r);
-            vNum--;
+            Vertices.RemoveAt(r);
+            VNum--;
             
             //以下效率性能不好，但是删除方法在游戏运行中一般是不用的，编辑器中可能需要
             //所有出度边大于r的节点减1
@@ -62,7 +62,7 @@ namespace RedDot.Runtime.DigraphList
             {
                 foreach (var edge in outEdges[i])
                 {
-                    if (edge.toVertexRank > r) edge.toVertexRank--;
+                    if (edge.ToVertexRank > r) edge.ToVertexRank--;
                 }
             }
             //所有入度边大于r的节点减1
@@ -74,7 +74,7 @@ namespace RedDot.Runtime.DigraphList
                 }
             }
             
-            return v.data;
+            return v.Data;
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace RedDot.Runtime.DigraphList
         /// <returns></returns>
         public virtual Tv GetVertex(int r)
         {
-            return vertices[r].data;
+            return Vertices[r].Data;
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace RedDot.Runtime.DigraphList
         public virtual int FirstNbr(int r)
         {
             var edge = outEdges[r][0];
-            if (edge != null) return edge.toVertexRank;
+            if (edge != null) return edge.ToVertexRank;
             return -1;
         }
 
@@ -136,17 +136,18 @@ namespace RedDot.Runtime.DigraphList
         /// <returns></returns>
         public virtual VStatus GetStatus(int r)
         {
-            return vertices[r].status;
+            return Vertices[r].Status;
         }
 
         /// <summary>
         /// 设置顶点v的状态
         /// </summary>
         /// <param name="r"></param>
+        /// <param name="status"></param>
         /// <returns></returns>
         public virtual void SetStatus(int r, VStatus status)
         {
-            vertices[r].status = status;
+            Vertices[r].Status = status;
         }
 
         /// <summary>
@@ -156,7 +157,7 @@ namespace RedDot.Runtime.DigraphList
         /// <returns></returns>
         public virtual int GetDTime(int r)
         {
-            return vertices[r].dTime;
+            return Vertices[r].DTime;
         }
 
         /// <summary>
@@ -167,7 +168,7 @@ namespace RedDot.Runtime.DigraphList
         /// <returns></returns>
         public virtual void SetDTime(int r, int time)
         {
-            vertices[r].dTime = time;
+            Vertices[r].DTime = time;
         }
 
         /// <summary>
@@ -177,7 +178,7 @@ namespace RedDot.Runtime.DigraphList
         /// <returns></returns>
         public virtual int GetFTime(int r)
         {
-            return vertices[r].fTime;
+            return Vertices[r].FTime;
         }
 
         /// <summary>
@@ -188,7 +189,7 @@ namespace RedDot.Runtime.DigraphList
         /// <returns></returns>
         public virtual void SetFTime(int r, int time)
         {
-            vertices[r].fTime = time;
+            Vertices[r].FTime = time;
         }
 
         /// <summary>
@@ -198,7 +199,7 @@ namespace RedDot.Runtime.DigraphList
         /// <returns></returns>
         public virtual int GetParent(int r)
         {
-            return vertices[r].parent;
+            return Vertices[r].Parent;
         }
 
         /// <summary>
@@ -209,7 +210,7 @@ namespace RedDot.Runtime.DigraphList
         /// <returns></returns>
         public virtual void SetParent(int r, int pr)
         {
-            vertices[r].parent = pr;
+            Vertices[r].Parent = pr;
         }
 
         /// <summary>
@@ -219,7 +220,7 @@ namespace RedDot.Runtime.DigraphList
         /// <returns></returns>
         public virtual int GetPriority(int r)
         {
-            return vertices[r].priority;
+            return Vertices[r].Priority;
         }
 
         /// <summary>
@@ -230,7 +231,7 @@ namespace RedDot.Runtime.DigraphList
         /// <returns></returns>
         public virtual void SetPriority(int r, int priority)
         {
-            vertices[r].priority = priority;
+            Vertices[r].Priority = priority;
         }
     }
 }

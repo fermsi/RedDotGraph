@@ -8,48 +8,46 @@ public class RedDotUIMono : MonoBehaviour
     public Image img;
     public Text numTxt;
 
-    private string key;
+    private string _key;
     public RedDotKeyEnum keyEnum;
     public uint id;
-    
+
     // Start is called before the first frame update
     void Start()
     {
-        key = keyEnum.ToString();
-        Debug.Log($"RedDotUIMono Start key:{key}");
-        RedDotManager.Ins().AddUI(key, RedDotStatusUpdate, id);
+        _key = keyEnum.ToString();
+        Debug.Log($"RedDotUIMono Start key:{_key}");
+        RedDotManager.Ins().AddUI(_key, RedDotStatusUpdate, id);
         RedDotStatusUpdate();
     }
 
     private void RedDotStatusUpdate()
     {
-        RedDotStatus status;
-        int num;
-        RedDotManager.Ins().GetRedDotStatus(key, id, out status, out num);
-        Debug.Log($"RedDotUIMono RedDotStatusUpdate key:{key}, id:{id}, status:{status}, num:{num}");
+        RedDotManager.Ins().GetRedDotStatus(_key, id, out var status, out var num);
+        Debug.Log($"RedDotUIMono RedDotStatusUpdate key:{_key}, id:{id}, status:{status}, num:{num}");
         string icon = "redDotNormal";
         switch (status)
         {
-            case RedDotStatus.RED_DOT_TYPE_NULL:
+            case RedDotStatus.RedDotStatusNull:
                 img.enabled = false;
                 numTxt.text = "";
                 return;
-            case RedDotStatus.RED_DOT_TYPE_NORMAL:
+            case RedDotStatus.RedDotStatusNormal:
                 img.enabled = true;
                 numTxt.text = "";
 //                icon = "redDotNormal";
                 break;
-            case RedDotStatus.RED_DOT_TYPE_NUMBER:
+            case RedDotStatus.RedDotStatusNumber:
                 img.enabled = true;
                 numTxt.text = num.ToString();
 //                icon = "redDotNormal";
                 break;
-            case RedDotStatus.RED_DOT_TYPE_NEW:
+            case RedDotStatus.RedDotStatusNew:
                 img.enabled = true;
                 numTxt.text = "";
                 icon = "redDotNew";
                 break;
-            case RedDotStatus.RED_DOT_TYPE_FULL:
+            case RedDotStatus.RedDotStatusFull:
                 img.enabled = true;
                 numTxt.text = "";
                 icon = "redDotFull";
@@ -65,6 +63,6 @@ public class RedDotUIMono : MonoBehaviour
     // Update is called once per frame
     void OnDestroy()
     {
-        RedDotManager.Ins().RemoveUI(key, RedDotStatusUpdate, id);
+        RedDotManager.Ins().RemoveUI(_key, RedDotStatusUpdate, id);
     }
 }

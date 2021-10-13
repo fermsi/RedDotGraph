@@ -2,14 +2,14 @@ namespace RedDot.Runtime.RedDot
 {
     public partial class RedDotManager
     {
-        private RedDotUIFrames uiFramesNoId;
-        private RedDotUIFrames uiFramesHasId;
-        protected RedDotGraph redDotGraph = new RedDotGraph();
+        private RedDotUIFrames _uiFramesNoId;
+        private RedDotUIFrames _uiFramesHasId;
+        protected RedDotGraph RedDotGrapic = new RedDotGraph();
 
         private RedDotManager()
         {
-            uiFramesNoId = new RedDotUIFrames();
-            uiFramesHasId = new RedDotUIFrames();
+            _uiFramesNoId = new RedDotUIFrames();
+            _uiFramesHasId = new RedDotUIFrames();
         }
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace RedDot.Runtime.RedDot
         /// <returns></returns>
         protected int AddRedDotVertex(string key, int redDotType, int externalId = -1)
         {
-            return redDotGraph.Insert(new RedDotVertex(key, redDotType, externalId));
+            return RedDotGrapic.Insert(new RedDotVertex(key, redDotType, externalId));
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace RedDot.Runtime.RedDot
         /// <returns></returns>
         protected bool AddRedDotEdge(string vex1, string vex2, int weight = 0)
         {
-            return redDotGraph.InsertEdge(vex1, vex2, weight);
+            return RedDotGrapic.InsertEdge(vex1, vex2, weight);
         }
 
         private void TravelUIFrames(RedDotUIFrames redDotUiFrames)
@@ -57,7 +57,7 @@ namespace RedDot.Runtime.RedDot
         private void VisitRedDotVertex(RedDotVertex v, uint id)
         {
             var info = v.GetRuntimeInfo(id);
-            RedDotExternalLogicVisitor.Ins().Visit(v.externalId, id, out info.redDotStatus, out info.value);
+            RedDotExternalLogicVisitor.Ins().Visit(v.ExternalId, id, out info.RedDotStatus, out info.Value);
         }
 
         /// <summary>
@@ -67,15 +67,15 @@ namespace RedDot.Runtime.RedDot
         private void VisitRedDotUIStruct(RedDotUIInfo redDotUiInfo)
         {
             //key的红点解决了，但带ID的红点也解决了
-            var v = redDotGraph.GetRedDotByKey(redDotUiInfo.Key);
+            var v = RedDotGrapic.GetRedDotByKey(redDotUiInfo.Key);
             var info = v.GetRuntimeInfo(redDotUiInfo.Id);
-            if (info.isDataChange)
+            if (info.IsDataChange)
             {
-                redDotGraph.RefreshRedDotStatus(v.key, redDotUiInfo.Id, VisitRedDotVertex);
+                RedDotGrapic.RefreshRedDotStatus(v.Key, redDotUiInfo.Id, VisitRedDotVertex);
             }
-            if (info.statusChangeTIme > redDotUiInfo.LastChangeTime)
+            if (info.StatusChangeTIme > redDotUiInfo.LastChangeTime)
             {
-                redDotUiInfo.LastChangeTime = info.statusChangeTIme;
+                redDotUiInfo.LastChangeTime = info.StatusChangeTIme;
                 RedDotStatusChange(redDotUiInfo);
             }
         }

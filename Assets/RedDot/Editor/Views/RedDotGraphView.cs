@@ -11,12 +11,12 @@ namespace RedDot.Editor.Views
 {
     public class RedDotGraphView : GraphView
     {
-        private RedDotWindow editorWindow;
-        private RedDotGraphData graphData;
+        private RedDotWindow _editorWindow;
+        private RedDotGraphData _graphData;
         public RedDotGraphView(RedDotWindow editorWindow, RedDotGraphData graphData)
         {
-            this.graphData = graphData;
-            this.editorWindow = editorWindow;
+            _graphData = graphData;
+            _editorWindow = editorWindow;
 
             //按照父级的宽高全屏填充
             this.StretchToParentSize();
@@ -75,51 +75,51 @@ namespace RedDot.Editor.Views
 
         private void KeySetting()
         {
-            if (editorWindow.keySettingWindow != null)
+            if (_editorWindow.keySettingWindow != null)
             {
-                editorWindow.keySettingWindow.Focus();
+                _editorWindow.keySettingWindow.Focus();
                 return;
             }
             var window = EditorWindow.CreateWindow<RedDotEnumDictWindow>(typeof(RedDotEnumDictWindow), typeof(RedDotWindow));
-            window.Initialize(graphData.KeyEnumDict, RedDotEditorConfig.KEY_WINDOW_TITLE);
+            window.Initialize(_graphData.keyEnumDict, RedDotEditorConfig.KEY_WINDOW_TITLE);
             window.Focus();
-            editorWindow.keySettingWindow = window;
+            _editorWindow.keySettingWindow = window;
         }
 
         private void ExternalIdSetting()
         {
-            if (editorWindow.externalIdSettingWindow != null)
+            if (_editorWindow.externalIdSettingWindow != null)
             {
-                editorWindow.externalIdSettingWindow.Focus();
+                _editorWindow.externalIdSettingWindow.Focus();
                 return;
             }
             var window = EditorWindow.CreateWindow<RedDotEnumDictWindow>(typeof(RedDotEnumDictWindow), typeof(RedDotWindow));
-            window.Initialize(graphData.ExternalIdEnumDict, RedDotEditorConfig.EXTERNAL_ID_WINDOW_TITLE);
+            window.Initialize(_graphData.externalIdEnumDict, RedDotEditorConfig.EXTERNAL_ID_WINDOW_TITLE);
             window.Focus();
-            editorWindow.externalIdSettingWindow = window;
+            _editorWindow.externalIdSettingWindow = window;
         }
 
         private void InitElements()
         {
             Dictionary<int, RedDotNodeView> views = new Dictionary<int, RedDotNodeView>();
-            foreach (var context in graphData.NodeContexts)
+            foreach (var context in _graphData.nodeContexts)
             {
-                var node = new RedDotNodeView(context, graphData);
+                var node = new RedDotNodeView(context, _graphData);
                 AddElement(node);
-                views[context.Id] = node;
+                views[context.id] = node;
             }
 
-            foreach (var context in graphData.NodeContexts)
+            foreach (var context in _graphData.nodeContexts)
             {
-                var outputNode = views[context.Id];
-                foreach (var outNodeId in context.OutNodeIds)
+                var outputNode = views[context.id];
+                foreach (var outNodeId in context.outNodeIds)
                 {
                     var inputNode = views[outNodeId];
-                    outputNode.outPort.ConnectTo(inputNode.inPort);
+                    outputNode.OutPort.ConnectTo(inputNode.InPort);
                     var edge = new Edge()
                     {
-                        output = outputNode.outPort,
-                        input = inputNode.inPort,
+                        output = outputNode.OutPort,
+                        input = inputNode.InPort,
                         pickingMode = PickingMode.Position,
                     };
                     AddElement(edge);
@@ -131,11 +131,11 @@ namespace RedDot.Editor.Views
         private bool OnMenuSelectEntry(SearchTreeEntry searchTreeEntry, SearchWindowContext context)
         {
             var type = searchTreeEntry.userData as Type;
-            var windowRoot = editorWindow.rootVisualElement;
-            var windowMousePosition = windowRoot.ChangeCoordinatesTo(windowRoot.parent, context.screenMousePosition - editorWindow.position.position);
+            var windowRoot = _editorWindow.rootVisualElement;
+            var windowMousePosition = windowRoot.ChangeCoordinatesTo(windowRoot.parent, context.screenMousePosition - _editorWindow.position.position);
             var graphMousePosition = contentViewContainer.WorldToLocal(windowMousePosition);
             
-            Node node = Activator.CreateInstance(type, graphData.CreateNodeContext(graphMousePosition), graphData) as Node;
+            Node node = Activator.CreateInstance(type, _graphData.CreateNodeContext(graphMousePosition), _graphData) as Node;
             AddElement(node);
             return true;
         }
@@ -164,7 +164,7 @@ namespace RedDot.Editor.Views
                 foreach (var node in graphViewChange.movedElements)
                 {
                     (node as RedDotNodeView).NodeChanged();
-                    graphData.Dirty();
+                    _graphData.Dirty();
                 }
             }
 
@@ -175,7 +175,7 @@ namespace RedDot.Editor.Views
                 {
                     var inNode = edge.input.node as RedDotNodeView;
                     var outNode = edge.output.node as RedDotNodeView;
-                    if (!graphData.AddEdge(inNode.GetContext(), outNode.GetContext()))
+                    if (!_graphData.AddEdge(inNode.GetContext(), outNode.GetContext()))
                     {
                         addFailEdges.Add(edge);
                     }
@@ -195,11 +195,11 @@ namespace RedDot.Editor.Views
                     {
                         var inNode = edge.input.node as RedDotNodeView;
                         var outNode = edge.output.node as RedDotNodeView;
-                        graphData.RemoveEdge(inNode.GetContext(), outNode.GetContext());
+                        _graphData.RemoveEdge(inNode.GetContext(), outNode.GetContext());
                     }
                     else if (element is RedDotNodeView nodeView)
                     {
-                        graphData.RemoveNodeContext(nodeView.GetContext());
+                        _graphData.RemoveNodeContext(nodeView.GetContext());
                     }
                 }
             }

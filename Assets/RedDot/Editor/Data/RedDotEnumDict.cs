@@ -10,43 +10,43 @@ namespace RedDot.Editor.Data
     [Serializable]
     public class RedDotEnumInfo
     {
-        public int Id;
-        public string Key;
-        public string Desc;
+        public int id;
+        public string key;
+        public string desc;
     }
     [Serializable]
     public class RedDotEnumDict
     {
-        private Dictionary<int, string> enumDict;
-        private Dictionary<int, string> descDict;
+        private Dictionary<int, string> _enumDict;
+        private Dictionary<int, string> _descDict;
         public List<RedDotEnumInfo> enumInfos = new List<RedDotEnumInfo>();
 
         public string classTemplate =
             "namespace RedDotDemo\n{\n\tpublic enum RedDotKeyEnum\n\t{\n[[key&values]]\n\t}\n}";
         public string keyValueReg = "\t\t[[key]] = [[value]],//[[desc]]";
         public string exportFileName = "RedDotKeyEnum.cs";
-        private int maxId = 0;
+        private int _maxId = 0;
         [NonSerialized]
-        private RedDotGraphData graphData;
-        private bool isChanged = false;
-        public bool IsChanged => isChanged;
-        private bool isCached = true;
-        public bool IsCached => isCached;
+        private RedDotGraphData _graphData;
+        private bool _isChanged = false;
+        public bool IsChanged => _isChanged;
+        private bool _isCached = true;
+        public bool IsCached => _isCached;
         public void ClearChangedTag()
         {
-            isChanged = false;
+            _isChanged = false;
         }
 
         public List<int> GetIds()
         {
-            return enumDict.Keys.ToList();
+            return _enumDict.Keys.ToList();
         }
 
         public List<string> GetNodeKeys()
         {
             var keys = new List<string>();
             keys.Add("null");
-            foreach (var info in enumDict)
+            foreach (var info in _enumDict)
             {
                 keys.Add($"{info.Key}:{info.Value}");
             }
@@ -56,7 +56,7 @@ namespace RedDot.Editor.Data
         public string GetNodeKey(int id)
         {
             string key;
-            if (enumDict.TryGetValue(id, out key))
+            if (_enumDict.TryGetValue(id, out key))
             {
                 key = $"{id}:{key}";
             }
@@ -77,73 +77,73 @@ namespace RedDot.Editor.Data
         public void PrepareExport()
         {
             enumInfos.Clear();
-            isCached = true;
-            if (enumDict == null)
+            _isCached = true;
+            if (_enumDict == null)
             {
-                enumDict = new Dictionary<int, string>();
+                _enumDict = new Dictionary<int, string>();
             }
-            if (descDict == null)
+            if (_descDict == null)
             {
-                descDict = new Dictionary<int, string>();
+                _descDict = new Dictionary<int, string>();
             }
-            foreach (var info in enumDict)
+            foreach (var info in _enumDict)
             {
-                enumInfos.Add(new RedDotEnumInfo(){Desc = GetDesc(info.Key), Id = info.Key, Key = info.Value});
+                enumInfos.Add(new RedDotEnumInfo(){desc = GetDesc(info.Key), id = info.Key, key = info.Value});
             }
         }
 
         public void ValidateData(RedDotGraphData graphData)
         {
-            this.graphData = graphData;
-            enumDict = new Dictionary<int, string>();
-            descDict = new Dictionary<int, string>();
-            maxId = 0;
+            _graphData = graphData;
+            _enumDict = new Dictionary<int, string>();
+            _descDict = new Dictionary<int, string>();
+            _maxId = 0;
             foreach (var info in enumInfos)
             {
-                var id = info.Id;
-                enumDict[id] = info.Key;
-                descDict[id] = info.Desc;
-                if (id > maxId)
+                var id = info.id;
+                _enumDict[id] = info.key;
+                _descDict[id] = info.desc;
+                if (id > _maxId)
                 {
-                    maxId = id;
+                    _maxId = id;
                 }
             }
         }
 
         public int Add()
         {
-            var id = ++maxId;
-            enumDict[id] = "Default";
-            descDict[id] = "加一点描述吧";
-            graphData.Dirty();
-            isChanged = true;
-            isCached = false;
+            var id = ++_maxId;
+            _enumDict[id] = "Default";
+            _descDict[id] = "加一点描述吧";
+            _graphData.Dirty();
+            _isChanged = true;
+            _isCached = false;
             return id;
         }
 
         public void Remove(int id)
         {
-            enumDict.Remove(id);
-            descDict.Remove(id);
-            isChanged = true;
-            isCached = false;
-            graphData.Dirty();
+            _enumDict.Remove(id);
+            _descDict.Remove(id);
+            _isChanged = true;
+            _isCached = false;
+            _graphData.Dirty();
         }
 
         public void ChangeKey(int id, string info)
         {
-            if (enumDict.ContainsKey(id))
+            if (_enumDict.ContainsKey(id))
             {
-                enumDict[id] = info;
-                graphData.Dirty();
-                isCached = false;
+                _enumDict[id] = info;
+                _graphData.Dirty();
+                _isCached = false;
             }
         }
 
         public string GetKey(int id)
         {
             string key;
-            if (!enumDict.TryGetValue(id, out key))
+            if (!_enumDict.TryGetValue(id, out key))
             {
                 key = "null";
             }
@@ -153,18 +153,18 @@ namespace RedDot.Editor.Data
 
         public void ChangeDesc(int id, string info)
         {
-            if (descDict.ContainsKey(id))
+            if (_descDict.ContainsKey(id))
             {
-                descDict[id] = info;
-                graphData.Dirty();
-                isCached = false;
+                _descDict[id] = info;
+                _graphData.Dirty();
+                _isCached = false;
             }
         }
 
         public string GetDesc(int id)
         {
             string key;
-            if (!descDict.TryGetValue(id, out key))
+            if (!_descDict.TryGetValue(id, out key))
             {
                 key = "null";
             }
@@ -175,22 +175,22 @@ namespace RedDot.Editor.Data
         public void ChangeKeyAndValueReg(string newReg)
         {
             keyValueReg = newReg;
-            isChanged = true;
-            graphData.Dirty();
+            _isChanged = true;
+            _graphData.Dirty();
         }
 
         public void ChangeClassTemplate(string newTemplate)
         {
             classTemplate = newTemplate;
-            isChanged = true;
-            graphData.Dirty();
+            _isChanged = true;
+            _graphData.Dirty();
         }
 
         public void ChangeExportFileName(string fileName)
         {
             exportFileName = fileName;
-            isChanged = true;
-            graphData.Dirty();
+            _isChanged = true;
+            _graphData.Dirty();
         }
 
         public void ExportTo(string filePath)
@@ -198,7 +198,7 @@ namespace RedDot.Editor.Data
             //[[key]] = [[value]];//[[desc]]
             var keyAndValuesStr = "";
             var endingSymble = "";
-            foreach (var info in enumDict)
+            foreach (var info in _enumDict)
             {
                 var id = info.Key;
                 var desc = GetDesc(id);

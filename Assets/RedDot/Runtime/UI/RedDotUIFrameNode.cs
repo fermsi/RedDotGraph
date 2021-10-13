@@ -11,26 +11,26 @@ namespace RedDot.Runtime.RedDot
     /// </summary>
     public class RedDotUIInfo
     {
-        private Action Cb;
+        private readonly Action _cb;
         public uint LastChangeTime = 0;
         public string Key { private set; get; }
         public uint Id { private set; get; }
 
         public RedDotUIInfo(string key, uint id, Action cb)
         {
-            Cb = cb;
+            _cb = cb;
             Key = key;
             Id = id;
         }
 
         public void DoCallBack()
         {
-            Cb.Invoke();
+            _cb.Invoke();
         }
 
         public bool IsSame(uint id, Action cb)
         {
-            return Id == id && Cb == cb;
+            return Id == id && _cb == cb;
         }
 
     }
@@ -39,15 +39,14 @@ namespace RedDot.Runtime.RedDot
     /// </summary>
     public class FrameNode : IEnumerable
     {
-        public Dictionary<string, List<RedDotUIInfo>> RedDotUiInfosDict = new Dictionary<string, List<RedDotUIInfo>>();
+        private readonly Dictionary<string, List<RedDotUIInfo>> _redDotUIInfosDict = new Dictionary<string, List<RedDotUIInfo>>();
 
         public bool TryAddRedDotUIInfo(string redDotKey, Action cb, uint id = 0)
         {
-            List<RedDotUIInfo> infos;
-            if (!RedDotUiInfosDict.TryGetValue(redDotKey, out infos))
+            if (!_redDotUIInfosDict.TryGetValue(redDotKey, out var infos))
             {
                 infos = new List<RedDotUIInfo>();
-                RedDotUiInfosDict[redDotKey] = infos;
+                _redDotUIInfosDict[redDotKey] = infos;
             }
 
             foreach (var info in infos)
@@ -64,13 +63,12 @@ namespace RedDot.Runtime.RedDot
 
         public RedDotUIInfo RemoveRedDotUIInfo(string redDotKey, Action cb, uint id = 0)
         {
-            List<RedDotUIInfo> infos = RedDotUiInfosDict[redDotKey];
+            List<RedDotUIInfo> infos = _redDotUIInfosDict[redDotKey];
             if (infos != null)
             {
-                RedDotUIInfo info;
                 for (int i = infos.Count - 1; i >= 0; i--)
                 {
-                    info = infos[i];
+                    var info = infos[i];
                     if (info.IsSame(id, cb))
                     {
                         infos.RemoveAt(i);
@@ -89,7 +87,7 @@ namespace RedDot.Runtime.RedDot
 
         public IEnumerator GetEnumerator()
         {
-            foreach (var infos in RedDotUiInfosDict)
+            foreach (var infos in _redDotUIInfosDict)
             {
                 foreach (var info in infos.Value)
                 {
@@ -101,10 +99,9 @@ namespace RedDot.Runtime.RedDot
         public void DataChanged(List<string> keys, uint id)
         {
             Debug.Log($"DataChanged keys:{string.Join(", ", keys)}, id:{id}");
-            List<RedDotUIInfo> infos;
             foreach (var key in keys)
             {
-                if (RedDotUiInfosDict.TryGetValue(key, out infos))
+                if (_redDotUIInfosDict.TryGetValue(key, out var infos))
                 {
                     foreach (var info in infos)
                     {

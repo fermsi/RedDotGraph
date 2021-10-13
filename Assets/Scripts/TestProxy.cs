@@ -6,7 +6,7 @@ namespace RedDotDemo
 {
     public class TestProxy
     {
-        private static TestProxy _ins;
+        private static TestProxy s_ins;
 
         private TestProxy()
         {
@@ -14,12 +14,7 @@ namespace RedDotDemo
 
         public static TestProxy Ins()
         {
-            if (_ins == null)
-            {
-                _ins = new TestProxy();
-            }
-
-            return _ins;
+            return s_ins ?? (s_ins = new TestProxy());
         }
 
         public void RegVisitors()
@@ -41,87 +36,87 @@ namespace RedDotDemo
             
         }
 
-        private bool isBagFull = false;
+        private bool _isBagFull = false;
 
         public bool IsBagFull
         {
-            get => isBagFull;
+            get => _isBagFull;
             set
             { 
-                isBagFull = value;
+                _isBagFull = value;
                 RedDotManager.Ins().DataChange(RedDotKeyEnum.Bag.ToString()); 
             }
         }
 
         private void RedDotFullBag(out RedDotStatus status, out int num)
         {
-            status = isBagFull ? RedDotStatus.RED_DOT_TYPE_FULL : RedDotStatus.RED_DOT_TYPE_NULL;
+            status = _isBagFull ? RedDotStatus.RedDotStatusFull : RedDotStatus.RedDotStatusNull;
             num = 0;
         }
 
-        private bool isEquipNew = false;
+        private bool _isEquipNew = false;
         public bool IsEquipNew
         {
-            get => isEquipNew;
+            get => _isEquipNew;
             set
             {
-                isEquipNew = value;
+                _isEquipNew = value;
                 RedDotManager.Ins().DataChange(RedDotKeyEnum.Equip.ToString());
             }
         }
         private void RedDotNewEquip(out RedDotStatus status, out int num)
         {
-            status = isEquipNew ? RedDotStatus.RED_DOT_TYPE_NEW : RedDotStatus.RED_DOT_TYPE_NULL;
+            status = _isEquipNew ? RedDotStatus.RedDotStatusNew : RedDotStatus.RedDotStatusNull;
             num = 0;
         }
 
-        private int emailNum;
+        private int _emailNum;
 
         public int EmailNum
         {
-            get => emailNum;
+            get => _emailNum;
             set
             {
-                emailNum = value;
+                _emailNum = value;
                 RedDotManager.Ins().DataChange(RedDotKeyEnum.Email.ToString());
             }
         }
 
         private void RedDotNumberEmail(out RedDotStatus status, out int num)
         {
-            status = emailNum > 0 ? RedDotStatus.RED_DOT_TYPE_NUMBER : RedDotStatus.RED_DOT_TYPE_NULL;
-            num = emailNum;
+            status = _emailNum > 0 ? RedDotStatus.RedDotStatusNumber : RedDotStatus.RedDotStatusNull;
+            num = _emailNum;
         }
 
-        private Dictionary<int, bool> taskNumDict = new Dictionary<int, bool>();
+        private Dictionary<int, bool> _taskNumDict = new Dictionary<int, bool>();
 
         public void TaskStausChange(int taskId, bool hasRedDot)
         {
             Debug.Log($"TaskStausChange taskId:{taskId}, hasRedDot:{hasRedDot}");
-            taskNumDict[taskId] = hasRedDot;
+            _taskNumDict[taskId] = hasRedDot;
             RedDotManager.Ins().DataChange(RedDotKeyEnum.Task.ToString(), (uint)taskId);
         }
 
         public bool GetTaskHasRedDot(int taskId)
         {
-            return taskNumDict[taskId];
+            return _taskNumDict[taskId];
         }
 
         private void RedDotNormalTask_ID(uint id, out RedDotStatus status, out int num)
         {
-            status = taskNumDict[(int)id] ? RedDotStatus.RED_DOT_TYPE_NORMAL : RedDotStatus.RED_DOT_TYPE_NULL;
+            status = _taskNumDict[(int)id] ? RedDotStatus.RedDotStatusNormal : RedDotStatus.RedDotStatusNull;
             num = 0;
         }
 
         private void RedDotNormalTask(out RedDotStatus status, out int num)
         {
-            status = RedDotStatus.RED_DOT_TYPE_NULL;
+            status = RedDotStatus.RedDotStatusNull;
             num = 0;
-            foreach (var taskInfo in taskNumDict)
+            foreach (var taskInfo in _taskNumDict)
             {
                 if (taskInfo.Value)
                 {
-                    status = RedDotStatus.RED_DOT_TYPE_NORMAL;
+                    status = RedDotStatus.RedDotStatusNormal;
                     break;
                 }
             }

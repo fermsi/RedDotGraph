@@ -12,12 +12,10 @@ namespace RedDot.Editor.Views
         private RedDotEnumDict _enumDict;
         private int _id;
 
-        private Button deleteBtn;
-
-        private VisualElement otherContainer;
-        private TextField keyTextField;
-        private Label valueLabel;
-        private TextField descTextField;
+        private VisualElement _otherContainer;
+        private TextField _keyTextField;
+        private Label _valueLabel;
+        private TextField _descTextField;
 
         public RedDotEnumSettingItem(RedDotEnumDict enumDict)
         {
@@ -28,33 +26,33 @@ namespace RedDot.Editor.Views
                     PathUtil.GetEditorFilePath("Resources/Styles/SettingItem.uxml"));
             VisualElement container = visualTree.Instantiate();
             Add(container);
-            deleteBtn = container.Q<Button>("deleteBtn");
+            var deleteBtn = container.Q<Button>("deleteBtn");
             deleteBtn.RegisterCallback<MouseUpEvent>((evt) =>
             {
                 _enumDict.Remove(_id);
             });
 
-            otherContainer = container.Q<VisualElement>("other");
-            keyTextField = container.Q<TextField>("keyTextField");
-            keyTextField.RegisterValueChangedCallback(evt =>
+            _otherContainer = container.Q<VisualElement>("other");
+            _keyTextField = container.Q<TextField>("keyTextField");
+            _keyTextField.RegisterValueChangedCallback(evt =>
             {
-                _enumDict.ChangeKey(_id, keyTextField.value);
+                _enumDict.ChangeKey(_id, _keyTextField.value);
             });
-            valueLabel = container.Q<Label>("value");
-            descTextField = container.Q<TextField>("descTextField");
-            descTextField.RegisterValueChangedCallback(evt =>
+            _valueLabel = container.Q<Label>("value");
+            _descTextField = container.Q<TextField>("descTextField");
+            _descTextField.RegisterValueChangedCallback(evt =>
             {
-                _enumDict.ChangeDesc(_id, descTextField.value);
+                _enumDict.ChangeDesc(_id, _descTextField.value);
             });
         }
 
         public void SetId(int id)
         {
             _id = id;
-            otherContainer.visible = true;
-            valueLabel.text = $"ID: {id}";
-            keyTextField.value = _enumDict.GetKey(_id);
-            descTextField.value = _enumDict.GetDesc(_id);
+            _otherContainer.visible = true;
+            _valueLabel.text = $"ID: {id}";
+            _keyTextField.value = _enumDict.GetKey(_id);
+            _descTextField.value = _enumDict.GetDesc(_id);
         }
     }
 }

@@ -21,24 +21,24 @@ namespace RedDot.Runtime.RedDot
 
         public void AddExportJson(RedDotExportJson config, bool checkVisitor = true)
         {
-            foreach (var vertexJson in config.Vertexs)
+            foreach (var vertexJson in config.vertexs)
             {
-                var externalId = vertexJson.ExternalId;
+                var externalId = vertexJson.externalId;
                 if (checkVisitor && externalId != -1)
                 {
                     if (!RedDotExternalLogicVisitor.Ins().CheckHasExternalId(externalId))
                     {
-                        Debug.LogError($"红点key:{vertexJson.Key}，对应的externalId:{externalId} func在RedDotExternalFuncVisitor中没有注册");
+                        Debug.LogError($"红点key:{vertexJson.key}，对应的externalId:{externalId} func在RedDotExternalFuncVisitor中没有注册");
                     }
                 }
-                AddRedDotVertex(vertexJson.Key, vertexJson.RedDotType, vertexJson.ExternalId);
+                AddRedDotVertex(vertexJson.key, vertexJson.redDotType, vertexJson.externalId);
             }
 
-            foreach (var edgeJson in config.Edges)
+            foreach (var edgeJson in config.edges)
             {
-                foreach (var outKey in edgeJson.OutKeys)
+                foreach (var outKey in edgeJson.outKeys)
                 {
-                    AddRedDotEdge(edgeJson.Key, outKey);
+                    AddRedDotEdge(edgeJson.key, outKey);
                 }
             }
         }

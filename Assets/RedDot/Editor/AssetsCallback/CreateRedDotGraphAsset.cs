@@ -11,7 +11,7 @@ namespace RedDot.Editor.AssetsCallback
         {
             var graphItem = ScriptableObject.CreateInstance<NewRedDotGraphAction>();
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0, graphItem,
-                $"New Red Dot Graph.{RedDotEditorConfig.Extension}", null, null);
+                $"New Red Dot Graph.{RedDotEditorConfig.EXTENSION}", null, null);
         }
     }
 }

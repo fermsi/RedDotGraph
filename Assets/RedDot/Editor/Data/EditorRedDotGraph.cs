@@ -21,19 +21,19 @@ namespace RedDot.Editor.Data
                 return false;
             }
 
-            v.redDotType = redDotType;
+            v.RedDotType = redDotType;
             
             return true;
         }
 
         public int RemoveEdge(string vex1, string vex2)
         {
-            if (!vertexDict.TryGetValue(vex1, out int v))
+            if (!VertexDict.TryGetValue(vex1, out int v))
             {
                 Debug.Log($"没找到顶点：{vex1}");
                 return -1;
             }
-            if (!vertexDict.TryGetValue(vex2, out int u))
+            if (!VertexDict.TryGetValue(vex2, out int u))
             {
                 Debug.Log($"没找到顶点：{vex2}");
                 return -1;
@@ -57,9 +57,9 @@ namespace RedDot.Editor.Data
             var v = GetRedDotByKey(oldStr);
             if (v != null)
             {
-                v.key = newStr;
-                vertexDict[newStr] = vertexDict[oldStr];
-                vertexDict.Remove(oldStr);
+                v.Key = newStr;
+                VertexDict[newStr] = VertexDict[oldStr];
+                VertexDict.Remove(oldStr);
                 return true;
             }
 
@@ -75,16 +75,16 @@ namespace RedDot.Editor.Data
         public override RedDotVertex Remove(int r)
         {
             var vertex = GetVertex(r);
-            var temp = vertexDict.Keys.ToList();
+            var temp = VertexDict.Keys.ToList();
             //需要更新vertexDict中的其他key对应的index
             foreach (var key in temp)
             {
-                if (vertexDict[key] > r)
+                if (VertexDict[key] > r)
                 {
-                    vertexDict[key] = vertexDict[key] - 1;
+                    VertexDict[key] = VertexDict[key] - 1;
                 }
             }
-            vertexDict.Remove(vertex.key);
+            VertexDict.Remove(vertex.Key);
             return base.Remove(r);
         }
         
@@ -95,7 +95,7 @@ namespace RedDot.Editor.Data
         /// <returns></returns>
         public RedDotVertex RemoveByKey(string key)
         {
-            if (vertexDict.TryGetValue(key, out int index))
+            if (VertexDict.TryGetValue(key, out int index))
             {
                 return Remove(index);
             }
@@ -110,7 +110,7 @@ namespace RedDot.Editor.Data
         /// <returns></returns>
         public int GetVertexRank(string vexKey)
         {
-            if (!vertexDict.TryGetValue(vexKey, out int v))
+            if (!VertexDict.TryGetValue(vexKey, out int v))
             {
                 Debug.Log($"没找到顶点：{vexKey}");
                 return -1;

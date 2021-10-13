@@ -9,28 +9,28 @@ namespace RedDot.Editor.Views
 {
     public class RedDotNodeStatusItem : VisualElement
     {
-        private Image iconImg;
-        private RedDotNodeContext nodeContext;
-        private RedDotGraphData graphData;
+        private Image _iconImg;
+        private RedDotNodeContext _nodeContext;
+        private RedDotGraphData _graphData;
 
         public RedDotNodeStatusItem(RedDotNodeContextStatus status, RedDotNodeContext nodeContext, RedDotGraphData graphData)
         {
-            this.nodeContext = nodeContext;
-            this.graphData = graphData;
+            this._nodeContext = nodeContext;
+            this._graphData = graphData;
             var visualTreeNormal = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
                 PathUtil.GetEditorFilePath("Resources/Styles/NodeIconItem.uxml"));
             VisualElement container = visualTreeNormal.Instantiate();
             Add(container);
-            iconImg = container.Q<Image>("iconImg");
+            _iconImg = container.Q<Image>("iconImg");
 //            iconImg.scaleMode = ScaleMode.ScaleAndCrop;
             var togger = container.Q<Toggle>("toggle");
             togger.RegisterCallback<ChangeEvent<bool>>((evt) =>
             {
-                nodeContext.RedDotType += (evt.newValue ? 1 : -1) * (int) status;
+                nodeContext.redDotType += (evt.newValue ? 1 : -1) * (int) status;
                 graphData.Dirty();
             });
             SetRedDotStatus(status);
-            togger.value = (nodeContext.RedDotType & (int)status) > 0;
+            togger.value = (nodeContext.redDotType & (int)status) > 0;
         }
         
         private void SetRedDotStatus(RedDotNodeContextStatus status)
@@ -38,10 +38,10 @@ namespace RedDot.Editor.Views
             var cfg = RedDotEditorConfig.GetStatusConfig(status);
             if (cfg == null)
             {
-                Debug.LogError($"{graphData.KeyEnumDict.GetNodeKey(nodeContext.KeyId)}对应的status:{status}配置没有找到，请在RedDotEditorConfig:InitConfig里添加配置");
+                Debug.LogError($"{_graphData.keyEnumDict.GetNodeKey(_nodeContext.keyId)}对应的status:{status}配置没有找到，请在RedDotEditorConfig:InitConfig里添加配置");
                 return;
             }
-            iconImg.image = Resources.Load<Texture2D>(cfg.Icon);
+            _iconImg.image = Resources.Load<Texture2D>(cfg.Icon);
         }
     }
 }

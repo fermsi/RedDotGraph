@@ -11,54 +11,54 @@ namespace RedDot.Editor.Data
     [Serializable]
     public class RedDotGraphData
     {
-        private static int CurCount = 0;
-        public List<RedDotNodeContext> NodeContexts = new List<RedDotNodeContext>();
-        public RedDotEnumDict KeyEnumDict = new RedDotEnumDict();
-        public RedDotEnumDict ExternalIdEnumDict = new RedDotEnumDict();
-        private EditorRedDotGraph editorRedDotGraph = new EditorRedDotGraph();
+        private static int s_curCount = 0;
+        public List<RedDotNodeContext> nodeContexts = new List<RedDotNodeContext>();
+        public RedDotEnumDict keyEnumDict = new RedDotEnumDict();
+        public RedDotEnumDict externalIdEnumDict = new RedDotEnumDict();
+        private EditorRedDotGraph _editorRedDotGraph = new EditorRedDotGraph();
         
         public RedDotNodeContext CreateNodeContext(Vector2 position)
         {
             var context = new RedDotNodeContext();
-            context.Id = ++CurCount;
-            var key = context.Id.ToString();
-            context.Position = position;
-            NodeContexts.Add(context);
+            context.id = ++s_curCount;
+            var key = context.id.ToString();
+            context.position = position;
+            nodeContexts.Add(context);
             var vertex = new RedDotVertex(key, 0, -1);
-            editorRedDotGraph.Insert(vertex);
+            _editorRedDotGraph.Insert(vertex);
             Dirty();
             return context;
         }
 
         public void ValidateGraph()
         {
-            CurCount = 0;
+            s_curCount = 0;
             
-            KeyEnumDict.ValidateData(this);
-            ExternalIdEnumDict.ValidateData(this);
+            keyEnumDict.ValidateData(this);
+            externalIdEnumDict.ValidateData(this);
             
-            foreach (var context in NodeContexts)
+            foreach (var context in nodeContexts)
             {
-                if (context.Id > CurCount)
+                if (context.id > s_curCount)
                 {
-                    CurCount = context.Id;
+                    s_curCount = context.id;
                 }
-                var key = context.Id.ToString();
+                var key = context.id.ToString();
                 var vertex = new RedDotVertex(key, 0, -1);
-                editorRedDotGraph.Insert(vertex);
+                _editorRedDotGraph.Insert(vertex);
             }
 
-            foreach (var context in NodeContexts)
+            foreach (var context in nodeContexts)
             {
-                foreach (var outId in context.OutNodeIds)
+                foreach (var outId in context.outNodeIds)
                 {
-                    if (!editorRedDotGraph.InsertEdge(context.Id.ToString(), outId.ToString()))
+                    if (!_editorRedDotGraph.InsertEdge(context.id.ToString(), outId.ToString()))
                     {
-                        Debug.Log($"out:{context.Id}, in:{outId} insert edge fail");
+                        Debug.Log($"out:{context.id}, in:{outId} insert edge fail");
                     }
                     else
                     {
-                        Debug.Log($"out:{context.Id}, in:{outId} insert edge success");
+                        Debug.Log($"out:{context.id}, in:{outId} insert edge success");
                         
                     }
                 }
@@ -70,11 +70,11 @@ namespace RedDot.Editor.Data
 //            Debug.Log($"==========RemoveNodeContext:{nodeContext}");
             if (nodeContext != null)
             {
-                if (editorRedDotGraph.RemoveByKey(nodeContext.Id.ToString()) != null)
+                if (_editorRedDotGraph.RemoveByKey(nodeContext.id.ToString()) != null)
                 {
 //                    Debug.Log($"==========RemoveNodeContext:RemoveByKey");
                     Dirty();
-                    return NodeContexts.Remove(nodeContext);
+                    return nodeContexts.Remove(nodeContext);
                 }
 //                Debug.Log($"==========RemoveNodeContext:fail");
             }
@@ -83,9 +83,9 @@ namespace RedDot.Editor.Data
 
         public bool RemoveEdge(RedDotNodeContext inNodeContext, RedDotNodeContext outNodeContext)
         {
-            if (editorRedDotGraph.RemoveEdge(outNodeContext.Id.ToString(), inNodeContext.Id.ToString()) != -1)
+            if (_editorRedDotGraph.RemoveEdge(outNodeContext.id.ToString(), inNodeContext.id.ToString()) != -1)
             {
-                outNodeContext.RemoveOutNode(inNodeContext.Id);
+                outNodeContext.RemoveOutNode(inNodeContext.id);
                 Dirty();
                 return true;
             }
@@ -95,67 +95,67 @@ namespace RedDot.Editor.Data
 
         public bool AddEdge(RedDotNodeContext inNodeContext, RedDotNodeContext outNodeContext)
         {
-            var success = editorRedDotGraph.InsertEdge(outNodeContext.Id.ToString(), inNodeContext.Id.ToString());
+            var success = _editorRedDotGraph.InsertEdge(outNodeContext.id.ToString(), inNodeContext.id.ToString());
             if (success)
             {
-                outNodeContext.AddOutNode(inNodeContext.Id);
+                outNodeContext.AddOutNode(inNodeContext.id);
                 Dirty();
             }
 
             return success;
         }
 
-        private bool dirty = false;
+        private bool _dirty = false;
         public void Dirty()
         {
-            dirty = true;
+            _dirty = true;
         }
 
-        public bool IsDirty => dirty;
+        public bool IsDirty => _dirty;
 
         public bool SaveTo(string pathName)
         {
             CacheData();
             FileUtilities.WriteRedDotGraphDataToDisk(pathName, this);
             AssetDatabase.Refresh();
-            dirty = false;
+            _dirty = false;
             return true;
         }
 
         public void CacheData()
         {
-            KeyEnumDict.PrepareExport();
-            ExternalIdEnumDict.PrepareExport();
+            keyEnumDict.PrepareExport();
+            externalIdEnumDict.PrepareExport();
         }
 
         public bool IsDataCached()
         {
-            return KeyEnumDict.IsCached && ExternalIdEnumDict.IsCached;
+            return keyEnumDict.IsCached && externalIdEnumDict.IsCached;
         }
 
         public void ExportTo(string pathName)
         {
             var exportJson = new RedDotExportJson();
             var nodeContextDict = new Dictionary<int, RedDotNodeContext>();
-            foreach (var nodeContext in NodeContexts)
+            foreach (var nodeContext in nodeContexts)
             {
-                nodeContextDict[nodeContext.Id] = nodeContext;
+                nodeContextDict[nodeContext.id] = nodeContext;
                 var node = new RedDotNodeJson();
-                node.Key = KeyEnumDict.GetKey(nodeContext.KeyId);
-                node.RedDotType = nodeContext.RedDotType;
-                node.ExternalId = nodeContext.FuncId;
-                exportJson.Vertexs.Add(node);
+                node.key = keyEnumDict.GetKey(nodeContext.keyId);
+                node.redDotType = nodeContext.redDotType;
+                node.externalId = nodeContext.funcId;
+                exportJson.vertexs.Add(node);
             }
 
-            foreach (var nodeContext in NodeContexts)
+            foreach (var nodeContext in nodeContexts)
             {
                 var edge = new RedDotEdgeJson();
-                edge.Key = KeyEnumDict.GetKey(nodeContext.KeyId);
-                foreach (var id in nodeContext.OutNodeIds)
+                edge.key = keyEnumDict.GetKey(nodeContext.keyId);
+                foreach (var id in nodeContext.outNodeIds)
                 {
-                    edge.OutKeys.Add(KeyEnumDict.GetKey(nodeContextDict[id].KeyId));
+                    edge.outKeys.Add(keyEnumDict.GetKey(nodeContextDict[id].keyId));
                 }
-                exportJson.Edges.Add(edge);
+                exportJson.edges.Add(edge);
             }
             FileUtilities.WriteRedDotGraphDataToDisk(pathName, exportJson);
             AssetDatabase.Refresh();

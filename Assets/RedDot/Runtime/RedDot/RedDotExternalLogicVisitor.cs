@@ -10,44 +10,44 @@ namespace RedDot.Runtime.RedDot
     {
         public delegate void RedDotExternalLogic(out RedDotStatus status, out int num);
         public delegate void RedDotExternalLogicWithId(uint id, out RedDotStatus status, out int num);
-        private static RedDotExternalLogicVisitor _ins = null;
+        private static RedDotExternalLogicVisitor s_ins;
         public static RedDotExternalLogicVisitor Ins()
         {
-            if (_ins == null)
+            if (s_ins == null)
             {
-                _ins = new RedDotExternalLogicVisitor();
+                s_ins = new RedDotExternalLogicVisitor();
             }
-            return _ins;
+            return s_ins;
         }
 
         private RedDotExternalLogicVisitor()
         {
         }
 
-        private Dictionary<int, RedDotExternalLogic> visitors = new Dictionary<int, RedDotExternalLogic>();
-        private Dictionary<int, RedDotExternalLogicWithId> visitorsWithId = new Dictionary<int, RedDotExternalLogicWithId>();
+        private Dictionary<int, RedDotExternalLogic> _visitors = new Dictionary<int, RedDotExternalLogic>();
+        private Dictionary<int, RedDotExternalLogicWithId> _visitorsWithId = new Dictionary<int, RedDotExternalLogicWithId>();
 
         public void RegExternalLogic(int externalId, RedDotExternalLogic externalLogic)
         {
-            visitors[externalId] = externalLogic;
+            _visitors[externalId] = externalLogic;
         }
 
         public void RegExternalLogic(int externalId, RedDotExternalLogicWithId externalLogic)
         {
-            visitorsWithId[externalId] = externalLogic;
+            _visitorsWithId[externalId] = externalLogic;
         }
 
         public void Visit(int externalId, uint id, out RedDotStatus status, out int num)
         {
             if (id == 0)
             {
-                if (visitors.TryGetValue(externalId, out RedDotExternalLogic visitor))
+                if (_visitors.TryGetValue(externalId, out RedDotExternalLogic visitor))
                 {
                     visitor(out status, out num);
                     return;
                 }
             }
-            if (visitorsWithId.TryGetValue(externalId, out RedDotExternalLogicWithId visitorId))
+            if (_visitorsWithId.TryGetValue(externalId, out RedDotExternalLogicWithId visitorId))
             {
                 visitorId(id, out status, out num);
                 return;
@@ -60,7 +60,7 @@ namespace RedDot.Runtime.RedDot
 
         public bool CheckHasExternalId(int externalId)
         {
-            return visitors.ContainsKey(externalId);
+            return _visitors.ContainsKey(externalId);
         }
     }
 }

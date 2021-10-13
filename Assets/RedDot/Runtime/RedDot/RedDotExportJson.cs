@@ -7,26 +7,26 @@ namespace RedDot.Runtime.RedDot
     public class RedDotNodeJson
     {
         //红点节点全局key
-        public string Key;
+        public string key;
         //红点状态类型
-        public int RedDotType;
+        public int redDotType;
         //逻辑ID
-        public int ExternalId;
+        public int externalId;
     }
 
     [Serializable]
     public class RedDotEdgeJson
     {
         //当前红点节点
-        public string Key;
+        public string key;
         //红点子节点列表
-        public List<string> OutKeys = new List<string>();
+        public List<string> outKeys = new List<string>();
     }
     
     [Serializable]
     public class RedDotExportJson
     {
-        public List<RedDotNodeJson> Vertexs = new List<RedDotNodeJson>();
-        public List<RedDotEdgeJson> Edges = new List<RedDotEdgeJson>();
+        public List<RedDotNodeJson> vertexs = new List<RedDotNodeJson>();
+        public List<RedDotEdgeJson> edges = new List<RedDotEdgeJson>();
     }
 }

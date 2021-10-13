@@ -1,117 +1,117 @@
 {
-    "NodeContexts": [
+    "nodeContexts": [
         {
-            "Id": 1,
-            "Position": {
+            "id": 1,
+            "position": {
                 "x": 300.0,
                 "y": 228.0
             },
-            "OutNodeIds": [
+            "outNodeIds": [
                 3,
                 4
             ],
-            "KeyId": 1,
-            "FuncId": -1,
-            "RedDotType": 13
+            "keyId": 1,
+            "funcId": -1,
+            "redDotType": 13
         },
         {
-            "Id": 2,
-            "Position": {
+            "id": 2,
+            "position": {
                 "x": 710.0,
                 "y": 84.0
             },
-            "OutNodeIds": [],
-            "KeyId": 2,
-            "FuncId": 3,
-            "RedDotType": 2
+            "outNodeIds": [],
+            "keyId": 2,
+            "funcId": 3,
+            "redDotType": 2
         },
         {
-            "Id": 3,
-            "Position": {
+            "id": 3,
+            "position": {
                 "x": 518.0,
                 "y": 120.0
             },
-            "OutNodeIds": [],
-            "KeyId": 3,
-            "FuncId": 2,
-            "RedDotType": 4
+            "outNodeIds": [],
+            "keyId": 3,
+            "funcId": 2,
+            "redDotType": 4
         },
         {
-            "Id": 4,
-            "Position": {
+            "id": 4,
+            "position": {
                 "x": 518.0,
                 "y": 358.0
             },
-            "OutNodeIds": [],
-            "KeyId": 4,
-            "FuncId": 1,
-            "RedDotType": 8
+            "outNodeIds": [],
+            "keyId": 4,
+            "funcId": 1,
+            "redDotType": 8
         },
         {
-            "Id": 5,
-            "Position": {
+            "id": 5,
+            "position": {
                 "x": 710.0,
                 "y": 378.0
             },
-            "OutNodeIds": [],
-            "KeyId": 5,
-            "FuncId": 4,
-            "RedDotType": 1
+            "outNodeIds": [],
+            "keyId": 5,
+            "funcId": 4,
+            "redDotType": 1
         }
     ],
-    "KeyEnumDict": {
+    "keyEnumDict": {
         "enumInfos": [
             {
-                "Id": 1,
-                "Key": "Normal",
-                "Desc": "普通红点"
+                "id": 1,
+                "key": "Normal",
+                "desc": "普通红点"
             },
             {
-                "Id": 2,
-                "Key": "Email",
-                "Desc": "邮件，数字红点"
+                "id": 2,
+                "key": "Email",
+                "desc": "邮件，数字红点"
             },
             {
-                "Id": 3,
-                "Key": "Equip",
-                "Desc": "装备，新"
+                "id": 3,
+                "key": "Equip",
+                "desc": "装备，新"
             },
             {
-                "Id": 4,
-                "Key": "Bag",
-                "Desc": "背包，满"
+                "id": 4,
+                "key": "Bag",
+                "desc": "背包，满"
             },
             {
-                "Id": 5,
-                "Key": "Task",
-                "Desc": "任务，普通红点，可以带ID"
+                "id": 5,
+                "key": "Task",
+                "desc": "任务，普通红点，可以带ID"
             }
         ],
         "classTemplate": "namespace RedDotDemo\n{\n\tpublic enum RedDotKeyEnum\n\t{\n[[key&values]]\n\t}\n}",
         "keyValueReg": "\t\t[[key]] = [[value]],//[[desc]]",
         "exportFileName": "RedDotKeyEnum.cs"
     },
-    "ExternalIdEnumDict": {
+    "externalIdEnumDict": {
         "enumInfos": [
             {
-                "Id": 1,
-                "Key": "Bag",
-                "Desc": "背包红点逻辑"
+                "id": 1,
+                "key": "Bag",
+                "desc": "背包红点逻辑"
             },
             {
-                "Id": 2,
-                "Key": "Equip",
-                "Desc": "装备红点逻辑"
+                "id": 2,
+                "key": "Equip",
+                "desc": "装备红点逻辑"
             },
             {
-                "Id": 3,
-                "Key": "Email",
-                "Desc": "邮件红点逻辑"
+                "id": 3,
+                "key": "Email",
+                "desc": "邮件红点逻辑"
             },
             {
-                "Id": 4,
-                "Key": "Task",
-                "Desc": "任务红点逻辑"
+                "id": 4,
+                "key": "Task",
+                "desc": "任务红点逻辑"
             }
         ],
         "classTemplate": "namespace RedDotDemo\n{\n\tpublic enum RedDotExternalLogicEnum\n\t{\n[[key&values]]\n\t}\n}",

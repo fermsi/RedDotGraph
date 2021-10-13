@@ -35,7 +35,7 @@ namespace RedDot.Editor.Importers
             if (string.IsNullOrEmpty(extension))
                 return false;
             extension = extension.Substring(1).ToLowerInvariant();
-            if (extension != RedDotEditorConfig.Extension)
+            if (extension != RedDotEditorConfig.EXTENSION)
                 return false;
             
             foreach (var w in Resources.FindObjectsOfTypeAll<RedDotWindow>())
